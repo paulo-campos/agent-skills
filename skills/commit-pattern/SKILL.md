@@ -146,48 +146,113 @@ git push origin <current-branch>
 
 When the user types `#release`, execute the **full release cycle** automatically:
 
-1. **Determine version** — Ask the user which version type (major/minor/patch) or read the current version from the latest tag
+1. **Determine version** — Automatically analyze commits since last tag and determine version (major/minor/patch) based on semantic versioning rules. Only ask user if they explicitly specify a version (e.g., `#release v1.2.3`)
 2. **Check branch** — Ensure current branch is `develop` and working tree is clean
 3. **Merge develop → main**
 4. **Generate changelog** from commits since last tag
-5. **Create release commit** with changelog
-6. **Tag** with `v<version>`
-7. **Push** main + tag
-8. **Switch back** to develop
+5. **Update package.json** with new version
+6. **Create release commit** with changelog
+7. **Tag** with `v<version>`
+8. **Push** main + tag
+9. **Switch back** to develop
+
+### Automated Version Determination
+
+**DO NOT ask the user for version type.** Automatically determine the version by analyzing commits since the last tag:
+
+```bash
+# Get commits since last tag
+COMMITS=$(git log $(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")..HEAD --pretty=format:"%s" --no-merges)
+
+# Analyze commit types and determine version
+if echo "$COMMITS" | grep -qE "^[💥🔥⚡]"; then
+  # Breaking changes → Major
+  VERSION_TYPE="major"
+elif echo "$COMMITS" | grep -qE "^✨"; then
+  # New features → Minor
+  VERSION_TYPE="minor"
+else
+  # Bug fixes, docs, chore, etc. → Patch
+  VERSION_TYPE="patch"
+fi
+```
+
+**Version determination rules:**
+| Commit Icon | Version Bump | Description |
+|-------------|--------------|-------------|
+| 💥 or 🔥 | Major | Breaking changes |
+| ✨ | Minor | New features |
+| 🐛, 📚, 💅, 🔧, ⚡, ✅, 📦, 🔨, 🧹, ⏪ | Patch | Bug fixes, docs, maintenance, etc. |
+
+### Explicit Version Override
+
+If the user specifies a version explicitly (e.g., `#release v2.0.0`), use that version instead of auto-determining:
+
+```bash
+# Parse user-specified version
+if [[ "$INPUT" =~ v([0-9]+)\.([0-9]+)\.([0-9]+) ]]; then
+  MAJOR=${BASH_REMATCH[1]}
+  MINOR=${BASH_REMATCH[2]}
+  PATCH=${BASH_REMATCH[3]}
+  VERSION="$MAJOR.$MINOR.$PATCH"
+else
+  # Auto-determine version from commits
+  # ... (see Automated Version Determination above)
+fi
+```
 
 ### Automated Release Steps
 
 ```bash
-# 1. Determine next version
+# 1. Get current version from latest tag
 CURRENT=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
-# Ask user: major, minor, or patch
+CURRENT_VERSION=${CURRENT#v}
 
-# 2. Ensure clean working tree on develop
+# 2. Analyze commits and determine new version
+COMMITS=$(git log $CURRENT..HEAD --pretty=format:"%s" --no-merges)
+# ... (determine VERSION_TYPE from commits)
+
+# 3. Calculate new version based on VERSION_TYPE
+IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT_VERSION"
+case $VERSION_TYPE in
+  major) MAJOR=$((MAJOR + 1)); MINOR=0; PATCH=0 ;;
+  minor) MINOR=$((MINOR + 1)); PATCH=0 ;;
+  patch) PATCH=$((PATCH + 1)) ;;
+esac
+NEW_VERSION="$MAJOR.$MINOR.$PATCH"
+
+# 4. Ensure clean working tree on develop
 git checkout develop
 git pull origin develop
 
-# 3. Merge into main
+# 5. Merge into main
 git checkout main
 git merge develop --no-ff -m "Merge develop into main for release"
 
-# 4. Generate changelog from commits since last tag
+# 6. Update package.json with new version (if file exists)
+if [ -f "package.json" ]; then
+  sed -i "s/\"version\": \"$CURRENT_VERSION\"/\"version\": \"$NEW_VERSION\"/" package.json
+  git add package.json
+fi
+
+# 7. Generate changelog from commits since last tag
 LOG=$(git log $CURRENT..HEAD --pretty=format:"%s" --no-merges)
 # Parse into categories (✨ feat, 🐛 fix, 🔧 refactor, 📚 docs, 🧹 chore)
 
-# 5. Create release commit
-git commit --allow-empty -m "🚀 Release v<version>
+# 8. Create release commit
+git commit --allow-empty -m "🚀 Release v$NEW_VERSION
 
 <changelog grouped by type>
 "
 
-# 6. Tag
-git tag -a v<version> -m "Release v<version>"
+# 9. Tag
+git tag -a v$NEW_VERSION -m "Release v$NEW_VERSION"
 
-# 7. Push
+# 10. Push
 git push origin main
-git push origin v<version>
+git push origin v$NEW_VERSION
 
-# 8. Switch back to develop
+# 11. Switch back to develop
 git checkout develop
 ```
 
@@ -225,6 +290,8 @@ The release commit message MUST follow this structure:
 ### Release Checklist
 
 - [ ] All features merged from develop
+- [ ] Version automatically determined from commits
+- [ ] package.json updated with new version
 - [ ] Release commit created with proper format and changelog
 - [ ] Pushed to main
 - [ ] Tag created: `git tag v<version>`
