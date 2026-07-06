@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "skills": {
+    "commit-pattern": {
+      "source": "paulo-campos/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/commit-pattern/SKILL.md",
+      "computedHash": "9f886d93138d3faf254f87c65eee6ed07b46948c880fb9a8c57946619ee2504a"
+    },
+    "project-docs": {
+      "source": "jezweb/claude-skills",
+      "sourceType": "github",
+      "skillPath": "plugins/dev-tools/skills/project-docs/SKILL.md",
+      "computedHash": "6a76a3d312743035df7f37b909f6e8bb444dddc7ab38759e92a46a2c4447df00"
+    }
+  }
+}
