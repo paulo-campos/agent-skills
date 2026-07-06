@@ -4,10 +4,10 @@
 
 ## Available Skills
 
-| Skill | Description |
-|-------|-------------|
-| `commit-pattern` | Standardized commit workflow with icon-based conventional commits, AI identifier flags, and release automation |
-| `vercel-deploy` | Deploy to Vercel with automatic Discord notifications for deployment status |
+| Skill | Description | Documentation |
+|-------|-------------|---------------|
+| `commit-pattern` | Standardized commit workflow with icon-based conventional commits, AI identifier flags, and release automation | [Detailed docs](docs/commit-pattern.md) |
+| `vercel-deploy` | Deploy to Vercel with automatic Discord notifications for deployment status | [Detailed docs](docs/vercel-deploy.md) |
 
 ## Installation
 
@@ -35,8 +35,11 @@ Example:
 Features:
 - Icon-based conventional commits (✨ feat, 🐛 fix, 🔧 refactor, etc.)
 - AI identifier flags ([codebuff], [claude], [cursor], [copilot])
+- Default branch strategy (assumes `develop` when not specified)
 - Release workflow via `#release` command
 - Pre-commit checks (lint, typecheck, tests)
+
+[Read full documentation →](docs/commit-pattern.md)
 
 ### vercel-deploy
 
@@ -46,10 +49,15 @@ Deploy to Vercel with Discord notifications:
 - First-time setup wizard
 - GitHub Actions workflow generation
 
+[Read full documentation →](docs/vercel-deploy.md)
+
 ## Structure
 
 ```
 agent-skills/
+├── docs/
+│   ├── commit-pattern.md
+│   └── vercel-deploy.md
 ├── skills/
 │   ├── commit-pattern/
 │   │   └── SKILL.md
