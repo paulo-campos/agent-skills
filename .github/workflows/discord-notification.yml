@@ -1,0 +1,76 @@
+name: Deploy Notification
+
+on:
+  push:
+    branches: ['*']
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Send Discord notification
+        env:
+          WEBHOOK_PRODUCTION: ${{ secrets.DISCORD_WEBHOOK_PRODUCTION }}
+          WEBHOOK_STAGING: ${{ secrets.DISCORD_WEBHOOK_STAGING }}
+          COMMIT_SHA: ${{ github.sha }}
+          REPO_NAME: ${{ github.event.repository.name }}
+          BRANCH: ${{ github.ref_name }}
+          ACTOR: ${{ github.actor }}
+        run: |
+          export COMMIT_MSG=$(git log -1 --pretty=format:'%s' "$COMMIT_SHA" 2>/dev/null || echo "no message")
+          export COMMIT_BODY=$(git log -1 --pretty=format:'%b' "$COMMIT_SHA" 2>/dev/null || echo "")
+          export COMMIT_URL="${{ github.event.repository.html_url }}/commit/$COMMIT_SHA"
+
+          IS_PROD="false"
+          if [ "$BRANCH" = "main" ]; then
+            IS_PROD="true"
+          fi
+
+          if [ "$IS_PROD" = "true" ]; then
+
+            PAYLOAD=$(python3 -c "
+          import json, os, re
+          msg = os.environ['COMMIT_MSG'].strip()
+          body = os.environ.get('COMMIT_BODY', '').strip()
+          url = os.environ['COMMIT_URL']
+          release_match = re.match(r'^Release v(.+)', msg)
+          if release_match:
+              version = release_match.group(1)
+              body_bullets = body.replace('\n- ', '\n• ')
+              content = f'\u2705 Deploy Succeeded\n\n\ud83d\ude80 Release v{version}\n\n{body_bullets}\n\n\ud83d\udd17 <https://crivosonoro.com.br>'
+          else:
+              icons = {'feat': '\u2728', 'fix': '\ud83d\udc1b', 'refactor': '\ud83d\udd27', 'docs': '\ud83d\udcda', 'style': '\ud83d\udc85', 'perf': '\u26a1', 'test': '\u2705', 'build': '\ud83d\udce6', 'ci': '\ud83d\udd28', 'chore': '\ud83e\uddf9', 'revert': '\u23ea'}
+              match = re.match(r'^(\w+)', msg)
+              icon = icons.get(match.group(1), '') if match else ''
+              content = f'\u2705 Deploy Succeeded\n\n**Commit SHA**\n[\`{os.environ[\"COMMIT_SHA\"]}\`]({url})\n\n**Message**\n{icon} {msg}'
+          print(json.dumps({'content': content}))
+          ")
+
+            curl -s -H "Content-Type: application/json" -d "$PAYLOAD" "$WEBHOOK_PRODUCTION"
+
+          else
+
+            PAYLOAD=$(python3 -c "
+          import json, os, re
+          sha = os.environ['COMMIT_SHA']
+          msg = os.environ['COMMIT_MSG'].strip()
+          body = os.environ.get('COMMIT_BODY', '').strip()
+          actor = os.environ['ACTOR']
+          url = os.environ['COMMIT_URL']
+          icons = {'feat': '\u2728', 'fix': '\ud83d\udc1b', 'refactor': '\ud83d\udd27', 'docs': '\ud83d\udcda', 'style': '\ud83d\udc85', 'perf': '\u26a1', 'test': '\u2705', 'build': '\ud83d\udce6', 'ci': '\ud83d\udd28', 'chore': '\ud83e\uddf9', 'revert': '\u23ea'}
+          match = re.match(r'^(\w+)', msg)
+          icon = icons.get(match.group(1), '') if match else ''
+          full = msg
+          if body:
+              full += '\n\n' + body
+          content = f'\u2705 Deploy Succeeded\n\n**Commit SHA**\n[\`{sha}\`]({url})\n\n**Message**\n{icon} {full}\n\n**Environment**\n\ud83e\uddea Staging'
+          print(json.dumps({'content': content}))
+          ")
+
+            curl -s -H "Content-Type: application/json" -d "$PAYLOAD" "$WEBHOOK_STAGING"
+          fi
