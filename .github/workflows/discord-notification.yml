@@ -42,12 +42,12 @@ jobs:
           if release_match:
               version = release_match.group(1)
               body_bullets = body.replace('\n- ', '\n• ')
-              content = f'\u2705 Deploy Succeeded\n\n\ud83d\ude80 Release v{version}\n\n{body_bullets}'
+              content = f'\u2705 Deploy Succeeded\n\n\ud83d\ude80 Release v{version}\n\n{body_bullets}\n\n\ud83d\udd17 <https://crivosonoro.com.br>'
           else:
               icons = {'feat': '\u2728', 'fix': '\ud83d\udc1b', 'refactor': '\ud83d\udd27', 'docs': '\ud83d\udcda', 'style': '\ud83d\udc85', 'perf': '\u26a1', 'test': '\u2705', 'build': '\ud83d\udce6', 'ci': '\ud83d\udd28', 'chore': '\ud83e\uddf9', 'revert': '\u23ea'}
               match = re.match(r'^(\w+)', msg)
               icon = icons.get(match.group(1), '') if match else ''
-              content = f'\u2705 Deploy Succeeded\n\n**Commit SHA**\n[\`{os.environ[\"COMMIT_SHA\"]}\`]({url})\n\n**Message**\n{icon} {msg}'
+              content = f'\u2705 Deploy Succeeded\n\n**Commit SHA**\n[\`{os.environ[\"COMMIT_SHA\"]}\`]({url})\n\n**Message**\n{icon} {msg}\n\n\ud83d\udd17 <https://crivosonoro.com.br>'
           print(json.dumps({'content': content}))
           ")
 
