@@ -2,14 +2,14 @@
 
 > Reusable AI agent skills for coding workflows. Install via `npx skills add`.
 
-## Available Skills
+## 📦 Available Skills
 
 | Skill | Description | Documentation |
 |-------|-------------|---------------|
 | `commit-pattern` | Standardized commit workflow with icon-based conventional commits, AI identifier flags, and release automation | [Detailed docs](docs/commit-pattern.md) |
 | `vercel-deploy` | Deploy to Vercel with automatic Discord notifications for deployment status | [Detailed docs](docs/vercel-deploy.md) |
 
-## Installation
+## 🚀 Installation
 
 ```bash
 # Install a specific skill
@@ -17,7 +17,7 @@ npx skills add paulo-campos/agent-skills --skill commit-pattern --yes
 npx skills add paulo-campos/agent-skills --skill vercel-deploy --yes
 ```
 
-## Skills Overview
+## 🔍 Skills Overview
 
 ### commit-pattern
 
@@ -51,7 +51,7 @@ Deploy to Vercel with Discord notifications:
 
 [Read full documentation →](docs/vercel-deploy.md)
 
-## Structure
+## 📁 Structure
 
 ```
 agent-skills/
@@ -68,6 +68,6 @@ agent-skills/
 └── LICENSE
 ```
 
-## License
+## 📄 License
 
 MIT

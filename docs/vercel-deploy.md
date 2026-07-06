@@ -2,7 +2,7 @@
 
 Deploy applications to Vercel with automatic Discord notifications for deployment status.
 
-## Table of Contents
+## 📑 Table of Contents
 
 - [Overview](#overview)
 - [How It Works](#how-it-works)
@@ -17,7 +17,7 @@ Deploy applications to Vercel with automatic Discord notifications for deploymen
 
 ---
 
-## Overview
+## 📋 Overview
 
 This skill automates Vercel deployments with real-time Discord notifications. It includes:
 
@@ -28,7 +28,7 @@ This skill automates Vercel deployments with real-time Discord notifications. It
 
 ---
 
-## How It Works
+## ⚙️ How It Works
 
 ```
 Developer pushes to any branch
@@ -57,7 +57,7 @@ Discord receives the message
 
 ---
 
-## First-Time Setup
+## 🧙 First-Time Setup
 
 When the AI loads this skill for the first time and detects that the setup is incomplete, it will guide you through the configuration step by step.
 
@@ -118,7 +118,7 @@ Push to the `develop` branch and verify the notification appears in the `#stagin
 
 ---
 
-## Deploy Commands
+## 🚀 Deploy Commands
 
 ### Standard Deploy
 
@@ -152,7 +152,7 @@ curl -X POST "$DISCORD_WEBHOOK_URL" \
 
 ---
 
-## Deployment Workflow
+## 🔄 Deployment Workflow
 
 ### 1. Pre-Deploy Checks
 
@@ -192,7 +192,7 @@ vercel inspect
 
 ---
 
-## Discord Notifications
+## 💬 Discord Notifications
 
 ### Production Channel (`#production`)
 
@@ -256,7 +256,7 @@ Staging
 
 ---
 
-## Environment Variables
+## 🔐 Environment Variables
 
 ### GitHub Secrets (configured by user)
 
@@ -282,7 +282,7 @@ Staging
 
 ---
 
-## Troubleshooting
+## 🔧 Troubleshooting
 
 ### Discord notification not appearing
 
@@ -354,7 +354,7 @@ vercel domains add <domain>
 
 ---
 
-## Rollback
+## ⏪ Rollback
 
 ```bash
 # List recent deployments
@@ -369,7 +369,7 @@ vercel rollback
 
 ---
 
-## Security Notes
+## 🔒 Security Notes
 
 - Never commit `.vercel-deploy-config.json` to git (add to .gitignore)
 - Use GitHub Secrets for sensitive data in workflows
@@ -379,7 +379,7 @@ vercel rollback
 
 ---
 
-## Quick Reference
+## 📊 Quick Reference
 
 | Trigger | Branch | Channel | Title | Fields |
 |---------|--------|---------|-------|--------|

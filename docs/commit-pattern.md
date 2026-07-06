@@ -2,7 +2,7 @@
 
 Standardized commit workflow with icon-based conventional commits, AI identifier flags, visual formatting, and quality checks.
 
-## Table of Contents
+## 📑 Table of Contents
 
 - [Overview](#overview)
 - [Commit Format](#commit-format)
@@ -19,7 +19,7 @@ Standardized commit workflow with icon-based conventional commits, AI identifier
 
 ---
 
-## Overview
+## 📋 Overview
 
 This skill ensures consistent commit messages across projects and AI agents. Every commit follows a structured format that includes:
 
@@ -30,7 +30,7 @@ This skill ensures consistent commit messages across projects and AI agents. Eve
 
 ---
 
-## Commit Format
+## 📝 Commit Format
 
 ```
 <icon> (<scope>): [<ai-flag>] <message in English>
@@ -50,7 +50,7 @@ This skill ensures consistent commit messages across projects and AI agents. Eve
 
 ---
 
-## Icon Reference
+## 🎨 Icon Reference
 
 | Icon | Type | Description |
 |------|------|-------------|
@@ -68,7 +68,7 @@ This skill ensures consistent commit messages across projects and AI agents. Eve
 
 ---
 
-## Common Scopes
+## 🎯 Common Scopes
 
 | Scope | When to use |
 |-------|-------------|
@@ -87,7 +87,7 @@ Use a descriptive scope when none of the above fit. Keep it short (1-2 words).
 
 ---
 
-## AI Identifier Flags
+## 🤖 AI Identifier Flags
 
 Every commit made by an AI agent MUST include its identifier flag in square brackets.
 
@@ -103,7 +103,7 @@ Every commit made by an AI agent MUST include its identifier flag in square brac
 
 ---
 
-## Message Rules
+## 📏 Message Rules
 
 1. **Always in English** — no exceptions
 2. **Imperative mood** — "add", not "added" or "adds"
@@ -113,7 +113,7 @@ Every commit made by an AI agent MUST include its identifier flag in square brac
 6. **Human commits omit the flag** — no brackets
 7. **Reference issues** in the footer when applicable
 
-### Correct Format
+### ✅ Correct Format
 
 ```
 ✨ (auth): [codebuff] add login with Google
@@ -123,7 +123,7 @@ Every commit made by an AI agent MUST include its identifier flag in square brac
 ✨ (skill): [codebuff] add commit-pattern skill
 ```
 
-### Wrong Format (NEVER USE)
+### ❌ Wrong Format (NEVER USE)
 
 ```
 feat: add login with Google                          <- missing icon, scope, and flag
@@ -136,7 +136,7 @@ fix: solve timeout on user endpoint                  <- missing icon, scope, and
 
 ---
 
-## Branch Strategy
+## 🌿 Branch Strategy
 
 - **Default branch**: If the user does not specify a branch, assume `develop`
 - Before starting any change, check the current branch with `git branch --show-current`
@@ -147,7 +147,7 @@ fix: solve timeout on user endpoint                  <- missing icon, scope, and
 
 ---
 
-## Pre-Commit Checks
+## ✅ Pre-Commit Checks
 
 **ALWAYS** run these checks before committing:
 
@@ -173,7 +173,7 @@ npx prettier --write .
 
 ---
 
-## Auto-Push
+## 🚀 Auto-Push
 
 After every commit, automatically push to the current branch:
 
@@ -185,7 +185,7 @@ git push origin <current-branch>
 
 ---
 
-## Release Workflow
+## 🏷️ Release Workflow
 
 ### `#release` Command
 
@@ -200,7 +200,7 @@ When the user types `#release`, execute the **full release cycle** automatically
 7. **Push** main + tag
 8. **Switch back** to develop
 
-### Automated Release Steps
+### 📜 Automated Release Steps
 
 ```bash
 # 1. Determine next version
@@ -236,7 +236,7 @@ git push origin v<version>
 git checkout develop
 ```
 
-### Changelog Format
+### 📋 Changelog Format
 
 The release commit message MUST follow this structure:
 
@@ -259,7 +259,7 @@ The release commit message MUST follow this structure:
 - Description of chore
 ```
 
-### Versioning Rules
+### 📊 Versioning Rules
 
 | Version | When to use | Example |
 |---------|-------------|---------|
@@ -269,9 +269,9 @@ The release commit message MUST follow this structure:
 
 ---
 
-## Examples
+## 💡 Examples
 
-### Feature Addition (AI commit)
+### ✨ Feature Addition (AI commit)
 
 ```bash
 git add src/components/Header.tsx
@@ -279,7 +279,7 @@ git commit -m "✨ (ui): [codebuff] add user avatar display"
 git push origin develop
 ```
 
-### Bug Fix (AI commit)
+### 🐛 Bug Fix (AI commit)
 
 ```bash
 git add src/services/api.ts
@@ -287,7 +287,7 @@ git commit -m "🐛 (api): [codebuff] solve timeout on user endpoint"
 git push origin develop
 ```
 
-### Refactor (AI commit)
+### 🔧 Refactor (AI commit)
 
 ```bash
 git add src/hooks/useAuth.ts src/utils/auth.ts
@@ -295,7 +295,7 @@ git commit -m "🔧 (auth): [codebuff] simplify authentication flow"
 git push origin develop
 ```
 
-### Skill Addition (AI commit)
+### ✨ Skill Addition (AI commit)
 
 ```bash
 git add .agents/skills/vercel-deploy/SKILL.md
@@ -303,7 +303,7 @@ git commit -m "✨ (skill): [codebuff] add vercel-deploy skill"
 git push origin develop
 ```
 
-### Human Commit (no flag)
+### 💅 Human Commit (no flag)
 
 ```bash
 git add src/styles.css
@@ -313,7 +313,7 @@ git push origin develop
 
 ---
 
-## Workflow
+## 🔄 Workflow
 
 1. **Check branch** — Run `git branch --show-current`
    - If no branch was specified by the user and current branch is **not** `develop`, switch to `develop`
