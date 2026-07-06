@@ -1,0 +1,27 @@
+{
+  "name": "agent-skills",
+  "version": "1.0.0",
+  "description": "Reusable AI agent skills for coding workflows",
+  "author": "Paulo Campos",
+  "license": "MIT",
+  "repository": "https://github.com/paulo-campos/agent-skills",
+  "keywords": [
+    "ai",
+    "skills",
+    "agent",
+    "coding",
+    "workflow"
+  ],
+  "skills": [
+    {
+      "name": "commit-pattern",
+      "path": "skills/commit-pattern/SKILL.md",
+      "description": "Standardized commit workflow with icon-based conventional commits, AI identifier flags, and release automation"
+    },
+    {
+      "name": "vercel-deploy",
+      "path": "skills/vercel-deploy/SKILL.md",
+      "description": "Deploy to Vercel with Discord notifications. Includes setup wizard, GitHub Actions workflow generation, and staging/production channel routing."
+    }
+  ]
+}
