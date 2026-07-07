@@ -193,7 +193,7 @@ git push origin <current-branch>
 
 When the user types `#release`, execute the **full release cycle** automatically:
 
-1. **Determine version** — Ask the user which version type (major/minor/patch) or read the current version from the latest tag
+1. **Determine version** — If user specifies `#release v1.2.3`, use that version. If user types `#release` without version, auto-determine from commits. **NEVER ask for version.**
 2. **Check branch** — Ensure current branch is `develop` and working tree is clean
 3. **Merge develop → main**
 4. **Generate changelog** from commits since last tag
@@ -205,9 +205,9 @@ When the user types `#release`, execute the **full release cycle** automatically
 ### 📜 Automated Release Steps
 
 ```bash
-# 1. Determine next version
+# 1. Determine next version from commits
 CURRENT=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
-# Ask user: major, minor, or patch
+# Analyze commits and auto-determine version (major/minor/patch)
 
 # 2. Ensure clean working tree on develop
 git checkout develop
@@ -268,6 +268,20 @@ The release commit message MUST follow this structure:
 | **Major** | Breaking API changes | `1.0.0` → `2.0.0` |
 | **Minor** | New features (backwards compatible) | `1.0.0` → `1.1.0` |
 | **Patch** | Bug fixes (backwards compatible) | `1.0.0` → `1.0.1` |
+
+### 🤖 Automated Version Determination
+
+When user types `#release` without a version, auto-determine from commits. **NEVER ask for version type.**
+
+| Commit Icon | Version Bump | Description |
+|-------------|--------------|-------------|
+| 💥 or 🔥 | Major | Breaking changes |
+| ✨ | Minor | New features |
+| 🐛, 📚, 💅, 🔧, ⚡, ✅, 📦, 🔨, 🧹, ⏪ | Patch | Bug fixes, docs, maintenance, etc. |
+
+### 🎯 Explicit Version Override
+
+If the user specifies a version (e.g., `#release v2.0.0`), use that version directly. **NEVER ask for confirmation.**
 
 ---
 
