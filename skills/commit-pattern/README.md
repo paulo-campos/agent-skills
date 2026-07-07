@@ -36,31 +36,31 @@ This skill ensures consistent commit messages across projects and AI agents. Eve
 
 ## 🎯 Goal
 
-Padronizar commits com formato icon-based, incluir flag de identificação de IA, executar quality checks antes de commit, e fazer push automático.
+Standardize commits with icon-based format, include AI identifier flags, execute quality checks before commit, and auto-push.
 
 ---
 
 ## 📥 Intake
 
-Scope e mensagem do commit. A skill detecta o tipo automaticamente pelo conteúdo.
+Scope and commit message. The skill detects the type automatically based on content.
 
 ---
 
 ## 📤 Output Contract
 
-Commit criado + quality checks executados + push automático + relatório do branch.
+Commit created + quality checks executed + auto-push + branch report.
 
 ---
 
 ## ✅ Quality Bar
 
-- Formato obrigatório: `<icon> (<scope>): [<ai-flag>] <message>`
-- Mensagem em inglês, imperative mood, ≤72 caracteres
-- Checks devem passar (lint, typecheck, test)
-- Nunca commitar código quebrado
-- Auto-push após commit
-- Reportar branch ao final
-- Se checks falharem, reportar erros e não commitar até resolver
+- Required format: `<icon> (<scope>): [<ai-flag>] <message>`
+- Message in English, imperative mood, ≤72 characters
+- Checks must pass (lint, typecheck, test)
+- Never commit broken code
+- Auto-push after commit
+- Report branch at the end
+- If checks fail, report errors and do not commit until resolved
 
 ---
 

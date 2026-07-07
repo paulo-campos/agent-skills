@@ -16,7 +16,7 @@
     {
       "name": "commit-pattern",
       "path": "skills/commit-pattern/SKILL.md",
-      "description": "Use ao commitar para aplicar formato padronizado com ícones, scope, flags de IA, rodar verificações de qualidade antes do commit e fazer push automático."
+      "description": "Use when committing code to apply standardized commit format with icons, scope, AI flags, run quality checks before commit, and auto-push."
     },
     {
       "name": "project-docs",

@@ -34,31 +34,31 @@ This skill automates Vercel deployments with real-time Discord notifications. It
 
 ## 🎯 Goal
 
-Fazer deploy de aplicações no Vercel com notificações automáticas no Discord via GitHub Actions, incluindo setup wizard, routing staging/production, e troubleshooting.
+Deploy applications to Vercel with automatic Discord notifications via GitHub Actions, including setup wizard, staging/production routing, and troubleshooting.
 
 ---
 
 ## 📥 Intake
 
-Nenhum input necessário. Tudo é configurado pelo setup wizard na primeira execução.
+No input required. Everything is configured by the setup wizard on first execution.
 
 ---
 
 ## 📤 Output Contract
 
-Deploy realizado + notificação no Discord (sucesso ou falha) + log de status + rollback disponível. Arquivo de notificação: `.github/workflows/discord-notification.yml`.
+Deploy completed + Discord notification (success or failure) + status log + rollback available. Notification file: `.github/workflows/discord-notification.yml`.
 
 ---
 
 ## ✅ Quality Bar
 
-- Webhooks configurados
-- Secrets do GitHub corretos
-- Workflow rodando
-- Notificação aparece no Discord correto (staging vs production)
-- Mensagem formatada corretamente com emojis e links
-- Fallback para erros com mensagem descritiva
-- Se qualquer verificação falhar, reportar o problema e não entregar até corrigir
+- Webhooks configured
+- GitHub secrets correct
+- Workflow running
+- Notification appears in the correct Discord channel (staging vs production)
+- Message formatted correctly with emojis and links
+- Fallback for errors with descriptive message
+- If any check fails, report the issue and do not deliver until fixed
 
 ---
 

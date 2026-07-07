@@ -6,7 +6,7 @@
 
 | Skill | Description | Documentation |
 |-------|-------------|---------------|
-| `commit-pattern` | Use ao commitar para aplicar formato padronizado com ícones, scope, flags de IA, rodar verificações de qualidade antes do commit e fazer push automático. | [Detailed docs](skills/commit-pattern/README.md) |
+| `commit-pattern` | Use when committing code to apply standardized commit format with icons, scope, AI flags, run quality checks before commit, and auto-push. | [Detailed docs](skills/commit-pattern/README.md) |
 | `project-docs` | Automatically maintains project documentation up-to-date whenever code changes affect documented features. Creates and updates vision, architecture, roadmap, changelog, and decisions. | [Detailed docs](skills/project-docs/README.md) |
 | `vercel-deploy` | Automatically deploys to Vercel with Discord notifications via GitHub Actions. Includes setup wizard, staging/production routing, and troubleshooting. | [Detailed docs](skills/vercel-deploy/README.md) |
 
