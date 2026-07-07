@@ -193,7 +193,7 @@ git push origin <current-branch>
 
 When the user types `#release`, execute the **full release cycle** automatically:
 
-1. **Determine version** — Automatically analyze commits since last tag and determine version (major/minor/patch) based on semantic versioning rules. Only ask user if they explicitly specify a version (e.g., `#release v1.2.3`)
+1. **Determine version** — If user specifies `#release v1.2.3`, use that version. If user types `#release` without version, auto-determine from commits. **NEVER ask for version.**
 2. **Check branch** — Ensure current branch is `develop` and working tree is clean
 3. **Merge develop → main**
 4. **Generate changelog** from commits since last tag
@@ -271,7 +271,7 @@ The release commit message MUST follow this structure:
 
 ### 🤖 Automated Version Determination
 
-**DO NOT ask the user for version type.** Automatically determine the version by analyzing commits since the last tag:
+When user types `#release` without a version, auto-determine from commits. **NEVER ask for version type.**
 
 | Commit Icon | Version Bump | Description |
 |-------------|--------------|-------------|
@@ -281,7 +281,7 @@ The release commit message MUST follow this structure:
 
 ### 🎯 Explicit Version Override
 
-If the user specifies a version explicitly (e.g., `#release v2.0.0`), use that version instead of auto-determining.
+If the user specifies a version (e.g., `#release v2.0.0`), use that version directly. **NEVER ask for confirmation.**
 
 ---
 
