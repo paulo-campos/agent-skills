@@ -34,20 +34,13 @@ jobs:
           if [ "$IS_PROD" = "true" ]; then
 
             PAYLOAD=$(python3 -c "
-          import json, os, re
+          import json, os
           msg = os.environ['COMMIT_MSG'].strip()
           body = os.environ.get('COMMIT_BODY', '').strip()
-          url = os.environ['COMMIT_URL']
-          release_match = re.match(r'^Release v(.+)', msg)
-          if release_match:
-              version = release_match.group(1)
-              body_bullets = body.replace('\n- ', '\n• ')
-              content = f'\u2705 Deploy Succeeded\n\n\ud83d\ude80 Release v{version}\n\n{body_bullets}\n\n\ud83d\udd17 <https://crivosonoro.com.br>'
-          else:
-              icons = {'feat': '\u2728', 'fix': '\ud83d\udc1b', 'refactor': '\ud83d\udd27', 'docs': '\ud83d\udcda', 'style': '\ud83d\udc85', 'perf': '\u26a1', 'test': '\u2705', 'build': '\ud83d\udce6', 'ci': '\ud83d\udd28', 'chore': '\ud83e\uddf9', 'revert': '\u23ea'}
-              match = re.match(r'^(\w+)', msg)
-              icon = icons.get(match.group(1), '') if match else ''
-              content = f'\u2705 Deploy Succeeded\n\n**Commit SHA**\n[\`{os.environ["COMMIT_SHA"]}\`](<{url}>)\n\n**Message**\n{icon} {msg}\n\n\ud83d\udd17 <https://crivosonoro.com.br>'
+          full = msg
+          if body:
+              full += '\n\n' + body
+          content = f'\u2705 Deploy Succeeded\n\n{full}'
           print(json.dumps({'content': content}))
           ")
 
