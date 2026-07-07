@@ -112,6 +112,8 @@ Every commit made by an AI agent MUST include its identifier flag in square brac
 5. **AI commits must include flag** — `[codebuff]`, `[claude]`, `[cursor]`, `[copilot]`
 6. **Human commits omit the flag** — no brackets
 7. **Reference issues** in the footer when applicable
+8. **Always commit when modifications are made** — every change must be committed
+9. **One commit per function changed** — each modified function gets its own commit
 
 ### ✅ Correct Format
 
