@@ -7,7 +7,7 @@
 | Skill | Description | Documentation |
 |-------|-------------|---------------|
 | `commit-pattern` | Standardized commit workflow with icon-based conventional commits, AI identifier flags, and release automation | [Detailed docs](docs/commit-pattern.md) |
-| `project-docs` | Generate and maintain comprehensive project documentation | [Detailed docs](skills/project-docs/SKILL.md) |
+| `project-docs` | Generate and maintain comprehensive project documentation | [Detailed docs](docs/project-docs.md) |
 | `vercel-deploy` | Deploy to Vercel with automatic Discord notifications for deployment status | [Detailed docs](docs/vercel-deploy.md) |
 
 ## 🚀 Installation
@@ -51,7 +51,7 @@ Generate and maintain comprehensive project documentation:
 - Icon-based section formatting
 - Structured documentation templates
 
-[Read full documentation →](skills/project-docs/SKILL.md)
+[Read full documentation →](docs/project-docs.md)
 
 ### vercel-deploy
 
