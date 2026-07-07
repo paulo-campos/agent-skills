@@ -35,12 +35,14 @@ jobs:
 
             PAYLOAD=$(python3 -c "
           import json, os
+          sha = os.environ['COMMIT_SHA']
+          url = os.environ['COMMIT_URL']
           msg = os.environ['COMMIT_MSG'].strip()
           body = os.environ.get('COMMIT_BODY', '').strip()
           full = msg
           if body:
               full += '\n\n' + body
-          content = f'\u2705 Deploy Succeeded\n\n{full}'
+          content = f'\u2705 Deploy Succeeded\n\n**Commit SHA**\n[\`{sha}\`](<{url}>)\n\n**Message**\n{full}'
           print(json.dumps({'content': content}))
           ")
 
@@ -61,7 +63,7 @@ jobs:
           full = msg
           if body:
               full += '\n\n' + body
-          content = f'\u2705 Deploy Succeeded\n\n**Commit SHA**\n[\`{sha}\`](<{url}>)\n\n**Message**\n{icon} {full}\n\n**Environment**\n\ud83e\uddea Staging'
+          content = f'\u2705 Deploy Succeeded\n\n**Commit SHA**\n[\`{sha}\`](<{url}>)\n\n**Message**\n{icon} {full}'
           print(json.dumps({'content': content}))
           ")
 
