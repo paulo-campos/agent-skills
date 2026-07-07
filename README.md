@@ -6,14 +6,16 @@
 
 | Skill | Description | Documentation |
 |-------|-------------|---------------|
-| `commit-pattern` | Standardized commit workflow with icon-based conventional commits, AI identifier flags, and release automation | [Detailed docs](docs/commit-pattern.md) |
-| `vercel-deploy` | Deploy to Vercel with automatic Discord notifications for deployment status | [Detailed docs](docs/vercel-deploy.md) |
+| `commit-pattern` | Standardized commit workflow with icon-based conventional commits, AI identifier flags, and release automation | [Detailed docs](skills/commit-pattern/README.md) |
+| `project-docs` | Generate and maintain comprehensive project documentation | [Detailed docs](skills/project-docs/README.md) |
+| `vercel-deploy` | Deploy to Vercel with automatic Discord notifications for deployment status | [Detailed docs](skills/vercel-deploy/README.md) |
 
 ## 🚀 Installation
 
 ```bash
 # Install a specific skill
 npx skills add paulo-campos/agent-skills --skill commit-pattern --yes
+npx skills add paulo-campos/agent-skills --skill project-docs --yes
 npx skills add paulo-campos/agent-skills --skill vercel-deploy --yes
 ```
 
@@ -39,7 +41,17 @@ Features:
 - Release workflow via `#release` command
 - Pre-commit checks (lint, typecheck, tests)
 
-[Read full documentation →](docs/commit-pattern.md)
+[Read full documentation →](skills/commit-pattern/README.md)
+
+### project-docs
+
+Generate and maintain comprehensive project documentation:
+- Automatic documentation creation when missing
+- Updates when project changes
+- Icon-based section formatting
+- Structured documentation templates
+
+[Read full documentation →](skills/project-docs/README.md)
 
 ### vercel-deploy
 
@@ -49,21 +61,30 @@ Deploy to Vercel with Discord notifications:
 - First-time setup wizard
 - GitHub Actions workflow generation
 
-[Read full documentation →](docs/vercel-deploy.md)
+[Read full documentation →](skills/vercel-deploy/README.md)
 
 ## 📁 Structure
 
 ```
 agent-skills/
-├── docs/
-│   ├── commit-pattern.md
-│   └── vercel-deploy.md
 ├── skills/
 │   ├── commit-pattern/
-│   │   └── SKILL.md
+│   │   ├── SKILL.md
+│   │   └── README.md
+│   ├── project-docs/
+│   │   ├── SKILL.md
+│   │   └── README.md
 │   └── vercel-deploy/
-│       └── SKILL.md
+│       ├── SKILL.md
+│       └── README.md
+├── .agents/
+│   └── skills/
+│       ├── commit-pattern/
+│       └── project-docs/
+├── AGENTS.md
+├── knowledge.md
 ├── README.md
+├── skills-lock.json
 ├── metadata.json
 └── LICENSE
 ```
