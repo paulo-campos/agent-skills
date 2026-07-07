@@ -1,11 +1,33 @@
 ---
 name: vercel-deploy
-description: Deploy to Vercel with Discord notifications. Use this skill when deploying applications to Vercel and want to send deployment status updates to Discord. Includes setup wizard, GitHub Actions workflow generation, and staging/production channel routing.
+description: Automatically deploys to Vercel with Discord notifications via GitHub Actions. Includes setup wizard, staging/production routing, and troubleshooting.
 ---
 
 # Vercel Deploy
 
 Deploy applications to Vercel with automatic Discord notifications for deployment status.
+
+## Goal
+
+Fazer deploy de aplicações no Vercel com notificações automáticas no Discord via GitHub Actions, incluindo setup wizard, routing staging/production, e troubleshooting.
+
+## Intake
+
+Nenhum input necessário. Tudo é configurado pelo setup wizard na primeira execução.
+
+## Output Contract
+
+Deploy realizado + notificação no Discord (sucesso ou falha) + log de status + rollback disponível. Arquivo de notificação: `.github/workflows/discord-notification.yml`.
+
+## Quality Bar
+
+- Webhooks configurados
+- Secrets do GitHub corretos
+- Workflow rodando
+- Notificação aparece no Discord correto (staging vs production)
+- Mensagem formatada corretamente com emojis e links
+- Fallback para erros com mensagem descritiva
+- Se qualquer verificação falhar, reportar o problema e não entregar até corrigir
 
 ## First-Time Setup Wizard
 
@@ -16,13 +38,19 @@ Deploy applications to Vercel with automatic Discord notifications for deploymen
 
 ### Step A — Check Prerequisites
 
-Verify the following files exist:
+**Create the notification workflow file** at:
 ```
-.github/workflows/notify.yml    <- GitHub Actions workflow
+.github/workflows/discord-notification.yml
+```
+
+Use the template from **Appendix A** as the content.
+
+Also verify the following file exists (optional):
+```
 vercel.json                      <- Vercel configuration (optional)
 ```
 
-If `notify.yml` does not exist, create it using the template in **Appendix A**.
+If `discord-notification.yml` does not exist, create it using the template in **Appendix A**.
 
 ### Step B — Configure Vercel
 
@@ -68,9 +96,9 @@ Add two secrets:
 
 ### Step E — Deploy the Workflow
 
-Commit and push the `.github/workflows/notify.yml` file:
+Commit and push the `.github/workflows/discord-notification.yml` file:
 ```bash
-git add .github/workflows/notify.yml
+git add .github/workflows/discord-notification.yml
 git commit -m "ci: add deploy notification workflow"
 git push origin main
 ```
@@ -311,7 +339,7 @@ vercel rollback
 | Symptom | Cause | Fix |
 |---------|-------|-----|
 | No notification after push | Webhook URL wrong or secret missing | Check GitHub Secrets: `DISCORD_WEBHOOK_STAGING` and `DISCORD_WEBHOOK_PRODUCTION` must match the Discord webhook URLs |
-| No notification after push | `notify.yml` not on `main` branch | The workflow only runs if the file exists on the branch that Vercel deploys from. Push `notify.yml` to `main` first |
+| No notification after push | `discord-notification.yml` not on `main` branch | The workflow only runs if the file exists on the branch that Vercel deploys from. Push `discord-notification.yml` to `main` first |
 | Notification appears but message is empty | Commit message not read correctly | The workflow uses `git log` with `fetch-depth: 0`. Verify the checkout step has `fetch-depth: 0` |
 | 404 error from Discord | Webhook URL expired or deleted | Regenerate the webhook in Discord and update the GitHub Secret |
 
@@ -427,9 +455,9 @@ vercel domains add <domain>
 project/
 |-- .github/
 |   |-- workflows/
-|       |-- notify.yml            # GitHub Actions workflow
-|-- vercel.json                    # Vercel configuration (optional)
-|-- .gitignore                     # Add sensitive config files
+|       |-- discord-notification.yml    # GitHub Actions workflow
+|-- vercel.json                         # Vercel configuration (optional)
+|-- .gitignore                          # Add sensitive config files
 |-- ...
 ```
 
@@ -437,7 +465,12 @@ project/
 
 ## Appendix A — Workflow Template
 
-If `notify.yml` does not exist, create it at `.github/workflows/notify.yml`:
+If `discord-notification.yml` does not exist, create the file at:
+```
+.github/workflows/discord-notification.yml
+```
+
+**The file content must be exactly:**
 
 ```yaml
 name: Deploy Notification
@@ -464,16 +497,16 @@ jobs:
           URL: ${{ github.event.deployment_status.target_url }}
           COMMIT_SHA: ${{ github.event.deployment.sha }}
           ENVIRONMENT: ${{ github.event.deployment.environment }}
-          REPO_NAME: ${{ github.event.repository.name }}
+          REPO_FULL: ${{ github.repository }}
+          PROD_URL: ${{ secrets.PRODUCTION_URL }}
         run: |
           export COMMIT_MSG=$(git log -1 --pretty=format:'%s' "$COMMIT_SHA" 2>/dev/null || echo "no message")
           export COMMIT_BODY=$(git log -1 --pretty=format:'%b' "$COMMIT_SHA" 2>/dev/null || echo "")
-          export PROD_URL="https://${REPO_NAME}.vercel.app"
 
           if [ "$STATUS" = "success" ]; then
-            export TITLE="Deploy Succeeded"
+            export TITLE="✅ Deploy Succeeded"
           else
-            export TITLE="Deploy Failed"
+            export TITLE="❌ Deploy Failed"
           fi
 
           IS_PROD="false"
@@ -481,10 +514,13 @@ jobs:
             IS_PROD="true"
           fi
 
+          # ================================================================
+          # PRODUCTION → Full commit message + production URL
+          # ================================================================
           if [ "$IS_PROD" = "true" ]; then
-            export ENV_LABEL="Production"
+            export ENV_LABEL="🚀 Production"
           else
-            export ENV_LABEL="Staging"
+            export ENV_LABEL="🧪 Staging"
           fi
 
           if [ "$IS_PROD" = "true" ]; then
@@ -499,18 +535,22 @@ jobs:
           full = msg
           if body:
               full += '\n\n' + body
-          content = f'{title}\n\n{full}\n\n{url}'
+          content = f'{title}\n\n{full}\n\n🔗 <{url}>'
           print(json.dumps({'content': content}))
           ")
 
             curl -s -H "Content-Type: application/json" -d "$PAYLOAD" "$WEBHOOK_PRODUCTION"
 
+          # ================================================================
+          # STAGING → Commit SHA + Message + Environment + URL
+          # ================================================================
           else
 
             PAYLOAD=$(python3 -c "
           import json, os
           title = os.environ['TITLE']
           sha = os.environ['COMMIT_SHA']
+          repo_full = os.environ['REPO_FULL']
           msg = os.environ['COMMIT_MSG'].strip()
           body = os.environ.get('COMMIT_BODY', '').strip()
           env_label = os.environ['ENV_LABEL']
@@ -518,7 +558,8 @@ jobs:
           full = msg
           if body:
               full += '\n\n' + body
-          content = f'{title}\n\n**Commit SHA**\n`{sha}`\n\n**Message**\n{full}\n\n**Environment**\n{env_label}\n\n**URL**\n{url}'
+          commit_url = f'https://github.com/{repo_full}/commit/{sha}'
+          content = f'{title}\n\n**Commit SHA**\n[\`{sha}\`](<{commit_url}>)\n\n**Message**\n{full}\n\n**Environment**\n{env_label}\n\n**URL**\n<{url}>'
           print(json.dumps({'content': content}))
           ")
 
