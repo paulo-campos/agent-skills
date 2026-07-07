@@ -1,11 +1,35 @@
 ---
 name: project-docs
-description: Generate and maintain comprehensive project documentation. Use when documentation is missing, outdated, or when making changes that affect documented features.
+description: Automatically maintains project documentation up-to-date whenever code changes affect documented features. Creates and updates vision, architecture, roadmap, changelog, and decisions.
 ---
 
 # Project Docs
 
 Generate, maintain, and synchronize project documentation automatically.
+
+## Goal
+
+Gerar e manter documentação completa e atualizada do projeto, incluindo vision, architecture, roadmap, changelog e decisões.
+
+## Intake
+
+Nome do projeto (opcional - se não informado, detecta automaticamente).
+
+## Output Contract
+
+Estrutura completa de documentação incluindo README.md, PROJECT_VISION.md, ARCHITECTURE.md, ROADMAP.md, CHANGELOG.md, DECISIONS.md, STATUS.md e GUIDES/ (getting-started, development, deployment). Todos com ícones e conteúdo detalhado.
+
+## Quality Bar
+
+- Todos os arquivos devem ter ícones
+- Links funcionando
+- Sem conteúdo duplicado
+- README.md linkando para todos os docs
+- Tabelas formatadas corretamente
+- Status atualizado
+- Changelog atualizado
+- Decisões com ADRs
+- Se qualquer verificação falhar, reportar o problema e não entregar até corrigir
 
 ## 🎯 Purpose
 
