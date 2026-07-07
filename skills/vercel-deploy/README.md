@@ -5,6 +5,10 @@ Deploy applications to Vercel with automatic Discord notifications for deploymen
 ## 📑 Table of Contents
 
 - [Overview](#overview)
+- [Goal](#goal)
+- [Intake](#intake)
+- [Output Contract](#output-contract)
+- [Quality Bar](#quality-bar)
 - [How It Works](#how-it-works)
 - [First-Time Setup](#first-time-setup)
 - [Deploy Commands](#deploy-commands)
@@ -28,6 +32,36 @@ This skill automates Vercel deployments with real-time Discord notifications. It
 
 ---
 
+## 🎯 Goal
+
+Deploy applications to Vercel with automatic Discord notifications via GitHub Actions, including setup wizard, staging/production routing, and troubleshooting.
+
+---
+
+## 📥 Intake
+
+No input required. Everything is configured by the setup wizard on first execution.
+
+---
+
+## 📤 Output Contract
+
+Deploy completed + Discord notification (success or failure) + status log + rollback available. Notification file: `.github/workflows/discord-notification.yml`.
+
+---
+
+## ✅ Quality Bar
+
+- Webhooks configured
+- GitHub secrets correct
+- Workflow running
+- Notification appears in the correct Discord channel (staging vs production)
+- Message formatted correctly with emojis and links
+- Fallback for errors with descriptive message
+- If any check fails, report the issue and do not deliver until fixed
+
+---
+
 ## ⚙️ How It Works
 
 ```
@@ -43,7 +77,7 @@ Vercel fires "deployment_status" event
         |
 GitHub Actions receives the event
         |
-notify.yml runs:
+discord-notification.yml runs:
   1. Checks out the code (fetch-depth: 0 for full git history)
   2. Reads the commit message via git log
   3. Determines environment (Production vs Staging)
@@ -63,13 +97,19 @@ When the AI loads this skill for the first time and detects that the setup is in
 
 ### Step A — Check Prerequisites
 
-Verify the following files exist:
+**Create the notification workflow file** at:
 ```
-.github/workflows/notify.yml    <- GitHub Actions workflow
+.github/workflows/discord-notification.yml
+```
+
+Use the template from **Appendix A** as the content.
+
+Also verify the following file exists (optional):
+```
 vercel.json                      <- Vercel configuration (optional)
 ```
 
-If `notify.yml` does not exist, it will be created automatically.
+If `discord-notification.yml` does not exist, create it using the template in **Appendix A**.
 
 ### Step B — Configure Vercel
 
@@ -107,7 +147,7 @@ Add two secrets:
 ### Step E — Deploy the Workflow
 
 ```bash
-git add .github/workflows/notify.yml
+git add .github/workflows/discord-notification.yml
 git commit -m "ci: add deploy notification workflow"
 git push origin main
 ```
@@ -200,20 +240,20 @@ Triggered when: push to `main` branch → Vercel production deploy succeeds.
 
 **Success message:**
 ```
-Deploy Succeeded
+✅ Deploy Succeeded
 
 {full commit message — subject + body}
 
-https://{project-name}.vercel.app
+🔗 <https://{project-name}.vercel.app>
 ```
 
 **Failure message:**
 ```
-Deploy Failed
+❌ Deploy Failed
 
 {full commit message — subject + body}
 
-https://{project-name}.vercel.app
+🔗 <https://{project-name}.vercel.app>
 ```
 
 ### Staging Channel (`#staging`)
@@ -222,36 +262,36 @@ Triggered when: push to any branch other than `main` → Vercel preview deploy s
 
 **Success message:**
 ```
-Deploy Succeeded
+✅ Deploy Succeeded
 
 **Commit SHA**
-`{full-commit-sha}`
+[`{full-commit-sha}`](<{commit-url}>)
 
 **Message**
 {full commit message — subject + body}
 
 **Environment**
-Staging
+🧪 Staging
 
 **URL**
-{preview-deploy-url}
+<{preview-deploy-url}>
 ```
 
 **Failure message:**
 ```
-Deploy Failed
+❌ Deploy Failed
 
 **Commit SHA**
-`{full-commit-sha}`
+[`{full-commit-sha}`](<{commit-url}>)
 
 **Message**
 {full commit message — subject + body}
 
 **Environment**
-Staging
+🧪 Staging
 
 **URL**
-{preview-deploy-url}
+<{preview-deploy-url}>
 ```
 
 ---
@@ -275,10 +315,8 @@ Staging
 | `ENVIRONMENT` | `github.event.deployment.environment` | "Production" or "Preview" |
 | `STATUS` | `github.event.deployment_status.state` | "success" or "failure" |
 | `URL` | `github.event.deployment_status.target_url` | Vercel deploy URL |
-| `REPO_NAME` | `github.event.repository.name` | Repository name |
-| `PROD_URL` | Computed | `https://{REPO_NAME}.vercel.app` |
-| `TITLE` | Computed | "Deploy Succeeded" or "Deploy Failed" |
-| `ENV_LABEL` | Computed | "Production" or "Staging" |
+| `REPO_FULL` | `github.repository` | Full repository name (owner/repo) |
+| `PROD_URL` | `secrets.PRODUCTION_URL` | Production URL |
 
 ---
 
@@ -289,7 +327,7 @@ Staging
 | Symptom | Cause | Fix |
 |---------|-------|-----|
 | No notification after push | Webhook URL wrong or secret missing | Check GitHub Secrets: `DISCORD_WEBHOOK_STAGING` and `DISCORD_WEBHOOK_PRODUCTION` must match the Discord webhook URLs |
-| No notification after push | `notify.yml` not on `main` branch | The workflow only runs if the file exists on the branch that Vercel deploys from. Push `notify.yml` to `main` first |
+| No notification after push | `discord-notification.yml` not on `main` branch | The workflow only runs if the file exists on the branch that Vercel deploys from. Push `discord-notification.yml` to `main` first |
 | Notification appears but message is empty | Commit message not read correctly | The workflow uses `git log` with `fetch-depth: 0`. Verify the checkout step has `fetch-depth: 0` |
 | 404 error from Discord | Webhook URL expired or deleted | Regenerate the webhook in Discord and update the GitHub Secret |
 
@@ -383,9 +421,9 @@ vercel rollback
 
 | Trigger | Branch | Channel | Title | Fields |
 |---------|--------|---------|-------|--------|
-| Push to `main` | main | `#production` | Deploy Succeeded | Full message + URL |
-| Push to `develop` | develop | `#staging` | Deploy Succeeded | SHA + Message + Environment + URL |
-| Deploy failure | any | `#production` or `#staging` | Deploy Failed | Full message + URL (prod) / Environment + URL (staging) |
+| Push to `main` | main | `#production` | ✅ Deploy Succeeded | Full message + URL |
+| Push to `develop` | develop | `#staging` | ✅ Deploy Succeeded | SHA + Message + Environment + URL |
+| Deploy failure | any | `#production` or `#staging` | ❌ Deploy Failed | Full message + URL (prod) / Environment + URL (staging) |
 
 | Command | Description |
 |---------|-------------|
@@ -395,3 +433,109 @@ vercel rollback
 | `vercel logs` | View logs |
 | `vercel rollback` | Rollback deployment |
 | `vercel env ls` | List environment variables |
+
+---
+
+## 📝 Appendix A — Workflow Template
+
+If `discord-notification.yml` does not exist, create the file at:
+```
+.github/workflows/discord-notification.yml
+```
+
+**The file content must be exactly:**
+
+```yaml
+name: Deploy Notification
+
+on:
+  deployment_status:
+
+jobs:
+  notify:
+    if: github.event.deployment_status.state == 'success' || github.event.deployment_status.state == 'failure'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.deployment.sha }}
+          fetch-depth: 0
+
+      - name: Send Discord notification
+        env:
+          WEBHOOK_STAGING: ${{ secrets.DISCORD_WEBHOOK_STAGING }}
+          WEBHOOK_PRODUCTION: ${{ secrets.DISCORD_WEBHOOK_PRODUCTION }}
+          STATUS: ${{ github.event.deployment_status.state }}
+          URL: ${{ github.event.deployment_status.target_url }}
+          COMMIT_SHA: ${{ github.event.deployment.sha }}
+          ENVIRONMENT: ${{ github.event.deployment.environment }}
+          REPO_FULL: ${{ github.repository }}
+          PROD_URL: ${{ secrets.PRODUCTION_URL }}
+        run: |
+          export COMMIT_MSG=$(git log -1 --pretty=format:'%s' "$COMMIT_SHA" 2>/dev/null || echo "no message")
+          export COMMIT_BODY=$(git log -1 --pretty=format:'%b' "$COMMIT_SHA" 2>/dev/null || echo "")
+
+          if [ "$STATUS" = "success" ]; then
+            export TITLE="✅ Deploy Succeeded"
+          else
+            export TITLE="❌ Deploy Failed"
+          fi
+
+          IS_PROD="false"
+          if [ "$ENVIRONMENT" = "Production" ]; then
+            IS_PROD="true"
+          fi
+
+          # ================================================================
+          # PRODUCTION → Full commit message + production URL
+          # ================================================================
+          if [ "$IS_PROD" = "true" ]; then
+            export ENV_LABEL="🚀 Production"
+          else
+            export ENV_LABEL="🧪 Staging"
+          fi
+
+          if [ "$IS_PROD" = "true" ]; then
+
+            PAYLOAD=$(python3 -c "
+          import json, os
+          title = os.environ['TITLE']
+          msg = os.environ['COMMIT_MSG'].strip()
+          body = os.environ.get('COMMIT_BODY', '').strip()
+          url = os.environ['PROD_URL']
+          env_label = os.environ['ENV_LABEL']
+          full = msg
+          if body:
+              full += '\n\n' + body
+          content = f'{title}\n\n{full}\n\n🔗 <{url}>'
+          print(json.dumps({'content': content}))
+          ")
+
+            curl -s -H "Content-Type: application/json" -d "$PAYLOAD" "$WEBHOOK_PRODUCTION"
+
+          # ================================================================
+          # STAGING → Commit SHA + Message + Environment + URL
+          # ================================================================
+          else
+
+            PAYLOAD=$(python3 -c "
+          import json, os
+          title = os.environ['TITLE']
+          sha = os.environ['COMMIT_SHA']
+          repo_full = os.environ['REPO_FULL']
+          msg = os.environ['COMMIT_MSG'].strip()
+          body = os.environ.get('COMMIT_BODY', '').strip()
+          env_label = os.environ['ENV_LABEL']
+          url = os.environ['URL']
+          full = msg
+          if body:
+              full += '\n\n' + body
+          commit_url = f'https://github.com/{repo_full}/commit/{sha}'
+          content = f'{title}\n\n**Commit SHA**\n[\`{sha}\`](<{commit_url}>)\n\n**Message**\n{full}\n\n**Environment**\n{env_label}\n\n**URL**\n<{url}>'
+          print(json.dumps({'content': content}))
+          ")
+
+            curl -s -H "Content-Type: application/json" -d "$PAYLOAD" "$WEBHOOK_STAGING"
+          fi
+```

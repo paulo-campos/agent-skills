@@ -9,27 +9,27 @@ Generate, maintain, and synchronize project documentation automatically.
 
 ## Goal
 
-Gerar e manter documentação completa e atualizada do projeto, incluindo vision, architecture, roadmap, changelog e decisões.
+Generate and maintain complete and up-to-date project documentation, including vision, architecture, roadmap, changelog, and decisions.
 
 ## Intake
 
-Nome do projeto (opcional - se não informado, detecta automaticamente).
+Project name (optional - if not provided, detects automatically).
 
 ## Output Contract
 
-Estrutura completa de documentação incluindo README.md, PROJECT_VISION.md, ARCHITECTURE.md, ROADMAP.md, CHANGELOG.md, DECISIONS.md, STATUS.md e GUIDES/ (getting-started, development, deployment). Todos com ícones e conteúdo detalhado.
+Complete documentation structure including README.md, PROJECT_VISION.md, ARCHITECTURE.md, ROADMAP.md, CHANGELOG.md, DECISIONS.md, STATUS.md, and GUIDES/ (getting-started, development, deployment). All with icons and detailed content.
 
 ## Quality Bar
 
-- Todos os arquivos devem ter ícones
-- Links funcionando
-- Sem conteúdo duplicado
-- README.md linkando para todos os docs
-- Tabelas formatadas corretamente
-- Status atualizado
-- Changelog atualizado
-- Decisões com ADRs
-- Se qualquer verificação falhar, reportar o problema e não entregar até corrigir
+- All files must have icons
+- Links working
+- No duplicate content
+- README.md linking to all docs
+- Tables properly formatted
+- Status up-to-date
+- Changelog up-to-date
+- Decisions with ADRs
+- If any check fails, report the issue and do not deliver until fixed
 
 ## 🎯 Purpose
 
