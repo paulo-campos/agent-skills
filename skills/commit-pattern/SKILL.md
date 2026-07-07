@@ -238,11 +238,21 @@ fi
 # 7. Generate changelog from commits since last tag
 LOG=$(git log $CURRENT..HEAD --pretty=format:"%s" --no-merges)
 # Parse into categories (✨ feat, 🐛 fix, 🔧 refactor, 📚 docs, 🧹 chore)
+# Format each commit as: • (scope): [ai-flag] description
+# Group by type under header: {icon} {type name}
 
 # 8. Create release commit
 git commit --allow-empty -m "🚀 Release v$NEW_VERSION
 
-<changelog grouped by type>
+✨ New features
+• (auth): [opencode] add OAuth login
+• (ui): [opencode] add dark mode toggle
+
+🐛 Bug fixes
+• (api): [opencode] solve timeout issue
+
+🔧 Refactor
+• (store): [opencode] simplify state management
 "
 
 # 9. Tag
@@ -258,25 +268,59 @@ git checkout develop
 
 ### Changelog Format
 
-The release commit message MUST follow this structure:
+The release commit message MUST follow this structure. Each commit type gets its own section with a header showing the icon and type name. Under each header, list **one bullet per commit** using Discord's native list format (`•`).
 
+**Format per line:**
+```
+• ({scope alterado}): [AI flag se existir] {descrição da alteração}
+```
+
+**Full structure:**
 ```
 🚀 Release v<version>
 
 ✨ New features
-- Description of feature (from commit messages)
+• (scope): [ai-flag] description of feature
+• (scope): [ai-flag] description of another feature
 
 🐛 Bug fixes
-- Description of fix
+• (scope): [ai-flag] description of fix
 
 🔧 Refactor
-- Description of refactor
+• (scope): [ai-flag] description of refactor
 
 📚 Documentation
-- Description of docs change
+• (scope): [ai-flag] description of docs change
 
 🧹 Maintenance
-- Description of chore
+• (scope): [ai-flag] description of chore
+```
+
+**Rules:**
+1. **Header** = `{icon} {type name}` (e.g., `✨ New features`)
+2. **One bullet per commit** — each commit gets its own `•` line
+3. **Scope always in parentheses** — `• (auth): ...` not `• auth: ...`
+4. **AI flag only if AI made the commit** — omit for human commits
+5. **Group by type** — if there are 3 features and 2 fixes, you get 2 sections (Features and Bug fixes) with 3 and 2 bullets respectively
+6. **Skip empty sections** — if no docs changes, don't include the Documentation header
+7. **Description** — keep the original commit message (imperative mood, English)
+
+**Example with mixed commits:**
+```
+🚀 Release v1.2.0
+
+✨ New features
+• (auth): [opencode] add OAuth login with Google
+• (ui): [opencode] add dark mode toggle
+• (api): [opencode] add rate limiting endpoint
+
+🐛 Bug fixes
+• (api): [opencode] solve timeout on user endpoint
+• (auth): [opencode] fix token refresh race condition
+• (ui): fix button alignment on mobile
+
+🔧 Refactor
+• (store): [opencode] simplify state management
 ```
 
 ### Versioning Rules
