@@ -7,6 +7,7 @@
 | Skill | Description | Documentation |
 |-------|-------------|---------------|
 | `commit-pattern` | Standardized commit workflow with icon-based conventional commits, AI identifier flags, and release automation | [Detailed docs](docs/commit-pattern.md) |
+| `project-docs` | Generate and maintain comprehensive project documentation | [Detailed docs](skills/project-docs/SKILL.md) |
 | `vercel-deploy` | Deploy to Vercel with automatic Discord notifications for deployment status | [Detailed docs](docs/vercel-deploy.md) |
 
 ## 🚀 Installation
@@ -14,6 +15,7 @@
 ```bash
 # Install a specific skill
 npx skills add paulo-campos/agent-skills --skill commit-pattern --yes
+npx skills add paulo-campos/agent-skills --skill project-docs --yes
 npx skills add paulo-campos/agent-skills --skill vercel-deploy --yes
 ```
 
@@ -41,6 +43,16 @@ Features:
 
 [Read full documentation →](docs/commit-pattern.md)
 
+### project-docs
+
+Generate and maintain comprehensive project documentation:
+- Automatic documentation creation when missing
+- Updates when project changes
+- Icon-based section formatting
+- Structured documentation templates
+
+[Read full documentation →](skills/project-docs/SKILL.md)
+
 ### vercel-deploy
 
 Deploy to Vercel with Discord notifications:
@@ -61,9 +73,18 @@ agent-skills/
 ├── skills/
 │   ├── commit-pattern/
 │   │   └── SKILL.md
+│   ├── project-docs/
+│   │   └── SKILL.md
 │   └── vercel-deploy/
 │       └── SKILL.md
+├── .agents/
+│   └── skills/
+│       ├── commit-pattern/
+│       └── project-docs/
+├── AGENTS.md
+├── knowledge.md
 ├── README.md
+├── skills-lock.json
 ├── metadata.json
 └── LICENSE
 ```
