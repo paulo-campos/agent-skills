@@ -6,12 +6,6 @@
       "sourceType": "github",
       "skillPath": "skills/commit-pattern/SKILL.md",
       "computedHash": "40adb0aa20cd113c116c1945ec833d309c7a378308f75222767dade4ec6ae183"
-    },
-    "project-docs": {
-      "source": "paulo-campos/agent-skills",
-      "sourceType": "github",
-      "skillPath": "skills/project-docs/SKILL.md",
-      "computedHash": "dd56a713caccbb375ce53df054f0fa87265d6d1ad0254fa00aa852316843bfc4"
     }
   }
 }
