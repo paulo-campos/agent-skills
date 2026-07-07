@@ -5,6 +5,10 @@ Standardized commit workflow with icon-based conventional commits, AI identifier
 ## 📑 Table of Contents
 
 - [Overview](#overview)
+- [Goal](#goal)
+- [Intake](#intake)
+- [Output Contract](#output-contract)
+- [Quality Bar](#quality-bar)
 - [Commit Format](#commit-format)
 - [Icon Reference](#icon-reference)
 - [Common Scopes](#common-scopes)
@@ -27,6 +31,36 @@ This skill ensures consistent commit messages across projects and AI agents. Eve
 - **Scope** — Area of codebase affected
 - **AI Flag** — Identifier of which AI agent made the commit
 - **Message** — Description in English, imperative mood
+
+---
+
+## 🎯 Goal
+
+Padronizar commits com formato icon-based, incluir flag de identificação de IA, executar quality checks antes de commit, e fazer push automático.
+
+---
+
+## 📥 Intake
+
+Scope e mensagem do commit. A skill detecta o tipo automaticamente pelo conteúdo.
+
+---
+
+## 📤 Output Contract
+
+Commit criado + quality checks executados + push automático + relatório do branch.
+
+---
+
+## ✅ Quality Bar
+
+- Formato obrigatório: `<icon> (<scope>): [<ai-flag>] <message>`
+- Mensagem em inglês, imperative mood, ≤72 caracteres
+- Checks devem passar (lint, typecheck, test)
+- Nunca commitar código quebrado
+- Auto-push após commit
+- Reportar branch ao final
+- Se checks falharem, reportar erros e não commitar até resolver
 
 ---
 

@@ -5,6 +5,10 @@ Automatic documentation generation and maintenance for any project.
 ## 📑 Table of Contents
 
 - [Overview](#overview)
+- [Goal](#goal)
+- [Intake](#intake)
+- [Output Contract](#output-contract)
+- [Quality Bar](#quality-bar)
 - [Purpose](#purpose)
 - [When to Use](#when-to-use)
 - [Documentation Structure](#documentation-structure)
@@ -19,6 +23,38 @@ Automatic documentation generation and maintenance for any project.
 ## 📋 Overview
 
 This skill ensures every project has clear, complete, and up-to-date documentation. It creates documentation when missing and updates it when the project changes.
+
+---
+
+## 🎯 Goal
+
+Gerar e manter documentação completa e atualizada do projeto, incluindo vision, architecture, roadmap, changelog e decisões.
+
+---
+
+## 📥 Intake
+
+Nome do projeto (opcional - se não informado, detecta automaticamente).
+
+---
+
+## 📤 Output Contract
+
+Estrutura completa de documentação incluindo README.md, PROJECT_VISION.md, ARCHITECTURE.md, ROADMAP.md, CHANGELOG.md, DECISIONS.md, STATUS.md e GUIDES/ (getting-started, development, deployment). Todos com ícones e conteúdo detalhado.
+
+---
+
+## ✅ Quality Bar
+
+- Todos os arquivos devem ter ícones
+- Links funcionando
+- Sem conteúdo duplicado
+- README.md linkando para todos os docs
+- Tabelas formatadas corretamente
+- Status atualizado
+- Changelog atualizado
+- Decisões com ADRs
+- Se qualquer verificação falhar, reportar o problema e não entregar até corrigir
 
 ---
 

@@ -6,9 +6,9 @@
 
 | Skill | Description | Documentation |
 |-------|-------------|---------------|
-| `commit-pattern` | Standardized commit workflow with icon-based conventional commits, AI identifier flags, and release automation | [Detailed docs](skills/commit-pattern/README.md) |
-| `project-docs` | Generate and maintain comprehensive project documentation | [Detailed docs](skills/project-docs/README.md) |
-| `vercel-deploy` | Deploy to Vercel with automatic Discord notifications for deployment status | [Detailed docs](skills/vercel-deploy/README.md) |
+| `commit-pattern` | Use ao commitar para aplicar formato padronizado com ícones, scope, flags de IA, rodar verificações de qualidade antes do commit e fazer push automático. | [Detailed docs](skills/commit-pattern/README.md) |
+| `project-docs` | Automatically maintains project documentation up-to-date whenever code changes affect documented features. Creates and updates vision, architecture, roadmap, changelog, and decisions. | [Detailed docs](skills/project-docs/README.md) |
+| `vercel-deploy` | Automatically deploys to Vercel with Discord notifications via GitHub Actions. Includes setup wizard, staging/production routing, and troubleshooting. | [Detailed docs](skills/vercel-deploy/README.md) |
 
 ## 🚀 Installation
 
@@ -45,9 +45,10 @@ Features:
 
 ### project-docs
 
-Generate and maintain comprehensive project documentation:
-- Automatic documentation creation when missing
-- Updates when project changes
+Automatically maintains project documentation up-to-date:
+- Documentation is created when missing
+- Documentation is updated when project changes
+- Automatic updates whenever code changes affect documented features
 - Icon-based section formatting
 - Structured documentation templates
 
@@ -84,7 +85,6 @@ agent-skills/
 ├── AGENTS.md
 ├── knowledge.md
 ├── README.md
-├── skills-lock.json
 ├── metadata.json
 └── LICENSE
 ```
