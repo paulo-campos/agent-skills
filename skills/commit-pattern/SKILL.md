@@ -1,11 +1,33 @@
 ---
 name: commit-pattern
-description: Standardized commit pattern with conventional commits, icon-based types, AI identifier flag, auto-push, and pre-commit checks. Use this skill when committing code to ensure consistent commit messages and workflow.
+description: Use ao commitar para aplicar formato padronizado com ícones, scope, flags de IA, rodar verificações de qualidade antes do commit e fazer push automático.
 ---
 
 # Commit Pattern
 
 Standardized commit workflow with icon-based conventional commits, AI identifier flag, visual formatting, and quality checks.
+
+## Goal
+
+Padronizar commits com formato icon-based, incluir flag de identificação de IA, executar quality checks antes de commit, e fazer push automático.
+
+## Intake
+
+Scope e mensagem do commit. A skill detecta o tipo automaticamente pelo conteúdo.
+
+## Output Contract
+
+Commit criado + quality checks executados + push automático + relatório do branch.
+
+## Quality Bar
+
+- Formato obrigatório: `<icon> (<scope>): [<ai-flag>] <message>`
+- Mensagem em inglês, imperative mood, ≤72 caracteres
+- Checks devem passar (lint, typecheck, test)
+- Nunca commitar código quebrado
+- Auto-push após commit
+- Reportar branch ao final
+- Se checks falharem, reportar erros e não commitar até resolver
 
 ## Format
 
