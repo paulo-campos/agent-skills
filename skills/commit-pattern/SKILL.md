@@ -403,8 +403,8 @@ git push origin main
 ### Skill Addition (AI commit)
 
 ```bash
-git add .agents/skills/vercel-deploy/SKILL.md
-git commit -m "✨ (skill): [codebuff] add vercel-deploy skill"
+git add .agents/skills/vercel-deploy-notification/SKILL.md
+git commit -m "✨ (skill): [codebuff] add vercel-deploy-notification skill"
 git push origin main
 ```
 
