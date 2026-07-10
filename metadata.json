@@ -24,8 +24,8 @@
       "description": "Automatically maintains project documentation up-to-date whenever code changes affect documented features. Creates and updates vision, architecture, roadmap, changelog, and decisions."
     },
     {
-      "name": "vercel-deploy",
-      "path": "skills/vercel-deploy/SKILL.md",
+      "name": "vercel-deploy-notification",
+      "path": "skills/vercel-deploy-notification/SKILL.md",
       "description": "Automatically deploys to Vercel with Discord notifications via GitHub Actions. Includes setup wizard, staging/production routing, and troubleshooting."
     }
   ]
