@@ -8,7 +8,7 @@
 |-------|-------------|---------------|
 | `commit-pattern` | Use when committing code to apply standardized commit format with icons, scope, AI flags, run quality checks before commit, and auto-push. | [Detailed docs](skills/commit-pattern/README.md) |
 | `project-docs` | Automatically maintains project documentation up-to-date whenever code changes affect documented features. Creates and updates vision, architecture, roadmap, changelog, and decisions. | [Detailed docs](skills/project-docs/README.md) |
-| `vercel-deploy` | Automatically deploys to Vercel with Discord notifications via GitHub Actions. Includes setup wizard, staging/production routing, and troubleshooting. | [Detailed docs](skills/vercel-deploy/README.md) |
+| `vercel-deploy-notification` | Automatically deploys to Vercel with Discord notifications via GitHub Actions. Includes setup wizard, staging/production routing, and troubleshooting. | [Detailed docs](skills/vercel-deploy-notification/README.md) |
 
 ## 🚀 Installation
 
@@ -16,7 +16,7 @@
 # Install a specific skill
 npx skills add paulo-campos/agent-skills --skill commit-pattern --yes
 npx skills add paulo-campos/agent-skills --skill project-docs --yes
-npx skills add paulo-campos/agent-skills --skill vercel-deploy --yes
+npx skills add paulo-campos/agent-skills --skill vercel-deploy-notification --yes
 ```
 
 ## 🔍 Skills Overview
@@ -54,7 +54,7 @@ Automatically maintains project documentation up-to-date:
 
 [Read full documentation →](skills/project-docs/README.md)
 
-### vercel-deploy
+### vercel-deploy-notification
 
 Deploy to Vercel with Discord notifications:
 - Automatic notifications on every deploy
@@ -62,7 +62,7 @@ Deploy to Vercel with Discord notifications:
 - First-time setup wizard
 - GitHub Actions workflow generation
 
-[Read full documentation →](skills/vercel-deploy/README.md)
+[Read full documentation →](skills/vercel-deploy-notification/README.md)
 
 ## 📁 Structure
 
@@ -75,7 +75,7 @@ agent-skills/
 │   ├── project-docs/
 │   │   ├── SKILL.md
 │   │   └── README.md
-│   └── vercel-deploy/
+│   └── vercel-deploy-notification/
 │       ├── SKILL.md
 │       └── README.md
 ├── .agents/

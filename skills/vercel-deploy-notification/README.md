@@ -1,25 +1,56 @@
----
-name: vercel-deploy
-description: Automatically deploys to Vercel with Discord notifications via GitHub Actions. Includes setup wizard, staging/production routing, and troubleshooting.
----
-
-# Vercel Deploy
+# Vercel Deploy Notification — Detailed Documentation
 
 Deploy applications to Vercel with automatic Discord notifications for deployment status.
 
-## Goal
+## 📑 Table of Contents
+
+- [Overview](#overview)
+- [Goal](#goal)
+- [Intake](#intake)
+- [Output Contract](#output-contract)
+- [Quality Bar](#quality-bar)
+- [How It Works](#how-it-works)
+- [First-Time Setup](#first-time-setup)
+- [Deploy Commands](#deploy-commands)
+- [Deployment Workflow](#deployment-workflow)
+- [Discord Notifications](#discord-notifications)
+- [Environment Variables](#environment-variables)
+- [Troubleshooting](#troubleshooting)
+- [Rollback](#rollback)
+- [Security Notes](#security-notes)
+
+---
+
+## 📋 Overview
+
+This skill automates Vercel deployments with real-time Discord notifications. It includes:
+
+- **Automatic notifications** on every deploy (success or failure)
+- **Staging/Production routing** — different Discord channels for different environments
+- **First-time setup wizard** — guided configuration
+- **GitHub Actions workflow** — handles notification logic
+
+---
+
+## 🎯 Goal
 
 Deploy applications to Vercel with automatic Discord notifications via GitHub Actions, including setup wizard, staging/production routing, and troubleshooting.
 
-## Intake
+---
+
+## 📥 Intake
 
 No input required. Everything is configured by the setup wizard on first execution.
 
-## Output Contract
+---
 
-Deploy completed + Discord notification (success or failure) + status log + rollback available. Notification file: `.github/workflows/discord-notification.yml`.
+## 📤 Output Contract
 
-## Quality Bar
+Deploy completed + Discord notification (success or failure) + status log + rollback available. Notification file: `.github/workflows/vercel-deploy-notification.yml`.
+
+---
+
+## ✅ Quality Bar
 
 - Webhooks configured
 - GitHub secrets correct
@@ -29,89 +60,9 @@ Deploy completed + Discord notification (success or failure) + status log + roll
 - Fallback for errors with descriptive message
 - If any check fails, report the issue and do not deliver until fixed
 
-## First-Time Setup Wizard
-
-> **When the AI loads this skill for the first time** and detects that the
-> setup is incomplete, it MUST guide the user through the configuration below
-> **before** running any deploy. Ask one step at a time, confirm each step
-> before moving to the next.
-
-### Step A — Check Prerequisites
-
-**Create the notification workflow file** at:
-```
-.github/workflows/discord-notification.yml
-```
-
-Use the template from **Appendix A** as the content.
-
-Also verify the following file exists (optional):
-```
-vercel.json                      <- Vercel configuration (optional)
-```
-
-If `discord-notification.yml` does not exist, create it using the template in **Appendix A**.
-
-### Step B — Configure Vercel
-
-1. Tell the user to link the project to Vercel:
-   ```
-   npx vercel link
-   ```
-2. In the Vercel Dashboard -> **Settings -> Git**:
-   - Set **Production Branch** to `main`
-   - Confirm **Preview Branches** = "All branches" (default)
-3. Confirm with the user: "Is Vercel configured for automatic deploys?"
-
-### Step C — Create Discord Webhooks
-
-Guide the user through creating two webhooks:
-
-1. **Open Discord** -> Select the server
-2. **Create channel** (or use existing):
-   - `#staging` — for preview deploys (develop, feature branches)
-   - `#production` — for production deploys (main branch)
-3. For **each channel**:
-   - Channel Settings -> Integrations -> Webhooks
-   - Click "New Webhook"
-   - Name: `Vercel Deploy`
-   - Copy the webhook URL
-4. Ask the user to paste both URLs when done:
-   - Staging webhook URL: `_______________`
-   - Production webhook URL: `_______________`
-
-### Step D — Configure GitHub Secrets
-
-Tell the user to go to:
-```
-https://github.com/{owner}/{repo}/settings/secrets/actions
-```
-
-Add two secrets:
-
-| Secret Name | Value |
-|-------------|-------|
-| `DISCORD_WEBHOOK_STAGING` | Staging webhook URL |
-| `DISCORD_WEBHOOK_PRODUCTION` | Production webhook URL |
-
-### Step E — Deploy the Workflow
-
-Commit and push the `.github/workflows/discord-notification.yml` file:
-```bash
-git add .github/workflows/discord-notification.yml
-git commit -m "ci: add deploy notification workflow"
-git push origin main
-```
-
-### Step F — Verify Setup
-
-Tell the user:
-> "Setup complete! To test, push to the `develop` branch and verify the
-> notification appears in the `#staging` channel on Discord."
-
 ---
 
-## How It Works — End-to-End Flow
+## ⚙️ How It Works
 
 ```
 Developer pushes to any branch
@@ -126,7 +77,7 @@ Vercel fires "deployment_status" event
         |
 GitHub Actions receives the event
         |
-notify.yml runs:
+vercel-deploy-notification.yml runs:
   1. Checks out the code (fetch-depth: 0 for full git history)
   2. Reads the commit message via git log
   3. Determines environment (Production vs Staging)
@@ -140,9 +91,77 @@ Discord receives the message
 
 ---
 
-## Deploy Commands
+## 🧙 First-Time Setup
+
+When the AI loads this skill for the first time and detects that the setup is incomplete, it will guide you through the configuration step by step.
+
+### Step A — Check Prerequisites
+
+**Create the notification workflow file** at:
+```
+.github/workflows/vercel-deploy-notification.yml
+```
+
+Use the template from **Appendix A** as the content.
+
+Also verify the following file exists (optional):
+```
+vercel.json                      <- Vercel configuration (optional)
+```
+
+If `vercel-deploy-notification.yml` does not exist, create it using the template in **Appendix A**.
+
+### Step B — Configure Vercel
+
+1. Link the project to Vercel:
+   ```bash
+   npx vercel link
+   ```
+2. In the Vercel Dashboard → **Settings → Git**:
+   - Set **Production Branch** to `main`
+   - Confirm **Preview Branches** = "All branches" (default)
+
+### Step C — Create Discord Webhooks
+
+1. **Open Discord** → Select the server
+2. **Create channels** (or use existing):
+   - `#staging` — for preview deploys (develop, feature branches)
+   - `#production` — for production deploys (main branch)
+3. For **each channel**:
+   - Channel Settings → Integrations → Webhooks
+   - Click "New Webhook"
+   - Name: `Vercel Deploy`
+   - Copy the webhook URL
+
+### Step D — Configure GitHub Secrets
+
+Go to: `https://github.com/{owner}/{repo}/settings/secrets/actions`
+
+Add two secrets:
+
+| Secret Name | Value |
+|-------------|-------|
+| `DISCORD_WEBHOOK_VERCEL_DEVELOP` | Staging webhook URL |
+| `DISCORD_WEBHOOK_VERCEL_PRODUCTION` | Production webhook URL |
+
+### Step E — Deploy the Workflow
+
+```bash
+git add .github/workflows/vercel-deploy-notification.yml
+git commit -m "ci: add deploy notification workflow"
+git push origin main
+```
+
+### Step F — Verify Setup
+
+Push to the `develop` branch and verify the notification appears in the `#staging` channel on Discord.
+
+---
+
+## 🚀 Deploy Commands
 
 ### Standard Deploy
+
 ```bash
 # Deploy to production
 vercel --prod
@@ -155,6 +174,7 @@ vercel --env NODE_ENV=production
 ```
 
 ### Deploy with Manual Notification
+
 ```bash
 # Send Discord notification before deploy
 curl -X POST "$DISCORD_WEBHOOK_URL" \
@@ -172,9 +192,10 @@ curl -X POST "$DISCORD_WEBHOOK_URL" \
 
 ---
 
-## Deployment Workflow
+## 🔄 Deployment Workflow
 
 ### 1. Pre-Deploy Checks
+
 ```bash
 # Run linting
 npm run lint
@@ -187,6 +208,7 @@ npm run build
 ```
 
 ### 2. Deploy
+
 ```bash
 # Push changes (Vercel auto-deploys on push)
 git push origin main
@@ -196,6 +218,7 @@ vercel --prod
 ```
 
 ### 3. Post-Deploy Verification
+
 ```bash
 # Check deployment status
 vercel ls
@@ -209,70 +232,37 @@ vercel inspect
 
 ---
 
-## How Workflow Determines Production vs Staging
-
-The workflow checks the `ENVIRONMENT` variable from the Vercel deploy event:
-
-```bash
-if [ "$ENVIRONMENT" = "Production" ]; then
-  IS_PROD="true"
-else
-  IS_PROD="false"
-fi
-```
-
-- **Production** (`IS_PROD=true`): Webhook goes to `DISCORD_WEBHOOK_PRODUCTION`
-- **Staging** (`IS_PROD=false`): Webhook goes to `DISCORD_WEBHOOK_STAGING`
-
----
-
-## How the Commit Message Is Read
-
-The workflow reads the commit via `git log` (NOT from the GitHub event):
-
-```bash
-COMMIT_MSG=$(git log -1 --pretty=format:'%s' "$COMMIT_SHA")
-COMMIT_BODY=$(git log -1 --pretty=format:'%b' "$COMMIT_SHA")
-```
-
-- `%s` = subject line (first line)
-- `%b` = body (everything after the first line)
-
-Both are combined for the full message in the Discord notification.
-
----
-
-## Discord Notification Formats
+## 💬 Discord Notifications
 
 ### Production Channel (`#production`)
 
-Triggered when: push to `main` branch -> Vercel production deploy succeeds.
+Triggered when: push to `main` branch → Vercel production deploy succeeds.
 
-**Message format:**
+**Success message:**
 ```
-Deploy Succeeded
+✅ Deploy Succeeded
 
 {full commit message — subject + body}
 
-https://{project-name}.vercel.app
+🔗 <https://{project-name}.vercel.app>
 ```
 
-**On failure:**
+**Failure message:**
 ```
-Deploy Failed
+❌ Deploy Failed
 
 {full commit message — subject + body}
 
-https://{project-name}.vercel.app
+🔗 <https://{project-name}.vercel.app>
 ```
 
 ### Staging Channel (`#staging`)
 
-Triggered when: push to any branch other than `main` -> Vercel preview deploy succeeds.
+Triggered when: push to any branch other than `main` → Vercel preview deploy succeeds.
 
-**Message format:**
+**Success message:**
 ```
-Deploy Succeeded
+✅ Deploy Succeeded
 
 **Commit SHA**
 `{full-commit-sha}`
@@ -281,15 +271,15 @@ Deploy Succeeded
 {full commit message — subject + body}
 
 **Environment**
-Staging
+🧪 Staging
 
 **URL**
-{preview-deploy-url}
+<{preview-deploy-url}>
 ```
 
-**On failure:**
+**Failure message:**
 ```
-Deploy Failed
+❌ Deploy Failed
 
 **Commit SHA**
 `{full-commit-sha}`
@@ -298,48 +288,46 @@ Deploy Failed
 {full commit message — subject + body}
 
 **Environment**
-Staging
+🧪 Staging
 
 **URL**
-{preview-deploy-url}
+<{preview-deploy-url}>
 ```
 
 ---
 
-## Rollback
+## 🔐 Environment Variables
 
-```bash
-# List recent deployments
-vercel ls
+### GitHub Secrets (configured by user)
 
-# Rollback to specific deployment
-vercel rollback <deployment-url>
+| Secret | Purpose |
+|--------|---------|
+| `DISCORD_WEBHOOK_VERCEL_DEVELOP` | Webhook URL for `#staging` channel |
+| `DISCORD_WEBHOOK_VERCEL_PRODUCTION` | Webhook URL for `#production` channel |
 
-# Rollback to previous version
-vercel rollback
-```
+### Workflow Environment Variables (auto-populated)
 
----
-
-## Error Handling
-
-| Error | Action |
-|-------|--------|
-| Dirty working tree | Warn: "There are uncommitted changes. Stash or commit them first." |
-| Push fails | Suggest `git pull --rebase origin main` and retry |
-| Discord webhook fails | Log the curl response and suggest checking the webhook URL |
-| Deploy fails (Vercel) | Send `Deploy Failed` notification with full context |
+| Variable | Source | Purpose |
+|----------|--------|---------|
+| `COMMIT_SHA` | `github.event.deployment.sha` | SHA of the deployed commit |
+| `COMMIT_MSG` | `git log --pretty=format:'%s'` | Subject line of commit |
+| `COMMIT_BODY` | `git log --pretty=format:'%b'` | Body of commit |
+| `ENVIRONMENT` | `github.event.deployment.environment` | "Production" or "Preview" |
+| `STATUS` | `github.event.deployment_status.state` | "success" or "failure" |
+| `URL` | `github.event.deployment_status.target_url` | Vercel deploy URL |
+| `REPO_FULL` | `github.repository` | Full repository name (owner/repo) |
+| `PROD_URL` | `secrets.PRODUCTION_URL` | Production URL |
 
 ---
 
-## Troubleshooting
+## 🔧 Troubleshooting
 
 ### Discord notification not appearing
 
 | Symptom | Cause | Fix |
 |---------|-------|-----|
-| No notification after push | Webhook URL wrong or secret missing | Check GitHub Secrets: `DISCORD_WEBHOOK_STAGING` and `DISCORD_WEBHOOK_PRODUCTION` must match the Discord webhook URLs |
-| No notification after push | `discord-notification.yml` not on `main` branch | The workflow only runs if the file exists on the branch that Vercel deploys from. Push `discord-notification.yml` to `main` first |
+| No notification after push | Webhook URL wrong or secret missing | Check GitHub Secrets: `DISCORD_WEBHOOK_VERCEL_DEVELOP` and `DISCORD_WEBHOOK_VERCEL_PRODUCTION` must match the Discord webhook URLs |
+| No notification after push | `vercel-deploy-notification.yml` not on `main` branch | The workflow only runs if the file exists on the branch that Vercel deploys from. Push `vercel-deploy-notification.yml` to `main` first |
 | Notification appears but message is empty | Commit message not read correctly | The workflow uses `git log` with `fetch-depth: 0`. Verify the checkout step has `fetch-depth: 0` |
 | 404 error from Discord | Webhook URL expired or deleted | Regenerate the webhook in Discord and update the GitHub Secret |
 
@@ -347,8 +335,8 @@ vercel rollback
 
 | Symptom | Cause | Fix |
 |---------|-------|-----|
-| Push succeeds but no deploy | Vercel not linked to repo | Run `npx vercel link` and configure in Dashboard -> Settings -> Git |
-| Push succeeds but no deploy | Production branch not set to `main` | Vercel Dashboard -> Settings -> Git -> Production Branch = `main` |
+| Push succeeds but no deploy | Vercel not linked to repo | Run `npx vercel link` and configure in Dashboard → Settings → Git |
+| Push succeeds but no deploy | Production branch not set to `main` | Vercel Dashboard → Settings → Git → Production Branch = `main` |
 | Deploy fails immediately | Build error in project | Check Vercel build logs. Fix the error, then push again |
 
 ### Staging shows wrong environment
@@ -356,7 +344,7 @@ vercel rollback
 | Symptom | Cause | Fix |
 |---------|-------|-----|
 | Staging notification says "Production" | Branch is named `main` | Only `main` branch triggers production. Use a different branch name |
-| Production notification says "Staging" | Vercel environment not configured | Vercel Dashboard -> Settings -> Environments -> set Production branch to `main` |
+| Production notification says "Staging" | Vercel environment not configured | Vercel Dashboard → Settings → Environments → set Production branch to `main` |
 
 ### Commit message not showing in notification
 
@@ -404,42 +392,22 @@ vercel domains add <domain>
 
 ---
 
-## Environment Variables
+## ⏪ Rollback
 
-### GitHub Secrets (configured by user)
+```bash
+# List recent deployments
+vercel ls
 
-| Secret | Purpose |
-|--------|---------|
-| `DISCORD_WEBHOOK_STAGING` | Webhook URL for `#staging` channel |
-| `DISCORD_WEBHOOK_PRODUCTION` | Webhook URL for `#production` channel |
+# Rollback to specific deployment
+vercel rollback <deployment-url>
 
-### Workflow Environment Variables (auto-populated)
-
-| Variable | Source | Purpose |
-|----------|--------|---------|
-| `COMMIT_SHA` | `github.event.deployment.sha` | SHA of the deployed commit |
-| `COMMIT_MSG` | `git log --pretty=format:'%s'` | Subject line of commit |
-| `COMMIT_BODY` | `git log --pretty=format:'%b'` | Body of commit |
-| `ENVIRONMENT` | `github.event.deployment.environment` | "Production" or "Preview" |
-| `STATUS` | `github.event.deployment_status.state` | "success" or "failure" |
-| `URL` | `github.event.deployment_status.target_url` | Vercel deploy URL |
-| `REPO_NAME` | `github.event.repository.name` | Repository name |
-| `PROD_URL` | Computed | `https://{REPO_NAME}.vercel.app` |
-| `TITLE` | Computed | "Deploy Succeeded" or "Deploy Failed" |
-| `ENV_LABEL` | Computed | "Production" or "Staging" |
+# Rollback to previous version
+vercel rollback
+```
 
 ---
 
-## Discord Webhook Setup
-
-1. Go to Discord Server Settings > Integrations > Webhooks
-2. Create new webhook
-3. Copy webhook URL
-4. Set as environment variable or add to config file
-
----
-
-## Security Notes
+## 🔒 Security Notes
 
 - Never commit `.vercel-deploy-config.json` to git (add to .gitignore)
 - Use GitHub Secrets for sensitive data in workflows
@@ -449,31 +417,36 @@ vercel domains add <domain>
 
 ---
 
-## File Structure
+## 📊 Quick Reference
 
-```
-project/
-|-- .github/
-|   |-- workflows/
-|       |-- discord-notification.yml    # GitHub Actions workflow
-|-- vercel.json                         # Vercel configuration (optional)
-|-- .gitignore                          # Add sensitive config files
-|-- ...
-```
+| Trigger | Branch | Channel | Title | Fields |
+|---------|--------|---------|-------|--------|
+| Push to `main` | main | `#production` | ✅ Deploy Succeeded | Full message + URL |
+| Push to `develop` | develop | `#staging` | ✅ Deploy Succeeded | SHA + Message + Environment + URL |
+| Deploy failure | any | `#production` or `#staging` | ❌ Deploy Failed | Full message + URL (prod) / Environment + URL (staging) |
+
+| Command | Description |
+|---------|-------------|
+| `vercel --prod` | Deploy to production |
+| `vercel` | Deploy to preview |
+| `vercel ls` | List deployments |
+| `vercel logs` | View logs |
+| `vercel rollback` | Rollback deployment |
+| `vercel env ls` | List environment variables |
 
 ---
 
-## Appendix A — Workflow Template
+## 📝 Appendix A — Workflow Template
 
-If `discord-notification.yml` does not exist, create the file at:
+If `vercel-deploy-notification.yml` does not exist, create the file at:
 ```
-.github/workflows/discord-notification.yml
+.github/workflows/vercel-deploy-notification.yml
 ```
 
 **The file content must be exactly:**
 
 ```yaml
-name: Deploy Notification
+name: Vercel Deploy Notification
 
 on:
   deployment_status:
@@ -491,8 +464,8 @@ jobs:
 
       - name: Send Discord notification
         env:
-          WEBHOOK_STAGING: ${{ secrets.DISCORD_WEBHOOK_STAGING }}
-          WEBHOOK_PRODUCTION: ${{ secrets.DISCORD_WEBHOOK_PRODUCTION }}
+          WEBHOOK_STAGING: ${{ secrets.DISCORD_WEBHOOK_VERCEL_DEVELOP }}
+          WEBHOOK_PRODUCTION: ${{ secrets.DISCORD_WEBHOOK_VERCEL_PRODUCTION }}
           STATUS: ${{ github.event.deployment_status.state }}
           URL: ${{ github.event.deployment_status.target_url }}
           COMMIT_SHA: ${{ github.event.deployment.sha }}
@@ -566,22 +539,3 @@ jobs:
             curl -s -H "Content-Type: application/json" -d "$PAYLOAD" "$WEBHOOK_STAGING"
           fi
 ```
-
----
-
-## Appendix B — Quick Reference
-
-| Trigger | Branch | Channel | Title | Fields |
-|---------|--------|---------|-------|--------|
-| Push to `main` | main | `#production` | Deploy Succeeded | Full message + URL |
-| Push to `develop` | develop | `#staging` | Deploy Succeeded | SHA + Message + Environment + URL |
-| Deploy failure | any | `#production` or `#staging` | Deploy Failed | Full message + URL (prod) / Environment + URL (staging) |
-
-| Command | Description |
-|---------|-------------|
-| `vercel --prod` | Deploy to production |
-| `vercel` | Deploy to preview |
-| `vercel ls` | List deployments |
-| `vercel logs` | View logs |
-| `vercel rollback` | Rollback deployment |
-| `vercel env ls` | List environment variables |
