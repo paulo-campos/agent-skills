@@ -1,417 +1,434 @@
+````md
 ---
 name: commit-pattern
-description: Use when committing code to apply standardized commit format with icons, scope, AI flags, run quality checks before commit, and auto-push.
+description: Use when committing code to apply standardized commit format with icons, issue references, AI flags, run quality checks before commit, and auto-push.
 ---
 
 # Commit Pattern
 
-Standardized commit workflow with icon-based conventional commits, AI identifier flag, visual formatting, and quality checks.
+Standardized commit workflow with icon-based conventional commits, GitHub issue references, AI identifier flags, visual formatting, quality checks, and release automation.
 
 ## Goal
 
-Standardize commits with icon-based format, include AI identifier flags, execute quality checks before commit, and auto-push.
+Standardize commits, ensure traceability between Issues → Commits → Releases, include AI identifier flags, execute quality checks before commit, and automate releases.
 
-## Intake
+---
 
-Scope and commit message. The skill detects the type automatically based on content.
+# Intake
 
-## Output Contract
+Preferred input:
+
+```text
+Issue: #123
+
+Implement OAuth login.
+````
+
+Or:
+
+```text
+Issues:
+- #123
+- #124
+
+Refactor authentication flow.
+```
+
+---
+
+# Issue Rules
+
+## Non-main branches
+
+For every branch except `main`, commits SHOULD be associated with one or more GitHub Issues.
+
+Examples:
+
+```text
+develop
+feature/*
+fix/*
+hotfix/*
+release/*
+```
+
+### Commit format
+
+```text
+✨ (auth): [claude] add OAuth login support (#123)
+
+🐛 (api): [cursor] fix token refresh issue (#145)
+
+🔧 (auth): [copilot] simplify oauth flow (#120, #121)
+```
+
+---
+
+## Missing Issue Handling
+
+If the user requests code changes but does not provide issue numbers:
+
+### The AI MUST:
+
+1. Ask for the related issue number.
+2. Stop before committing.
+3. Never invent issue references.
+4. Never create commits without issue references.
+
+Example:
+
+```text
+User:
+Implement OAuth login.
+
+Assistant:
+Please provide the related GitHub issue number before committing.
+
+Example:
+Issue: #123
+```
+
+---
+
+## Main Branch Exception
+
+Issue references are NOT required on `main`.
+
+The `main` branch follows the release workflow and uses release commits:
+
+```text
+🚀 Release v1.4.0
+```
+
+---
+
+# Branch Rules
+
+| Branch    | Require Issues |
+| --------- | -------------- |
+| main      | ❌              |
+| develop   | ✅              |
+| feature/* | ✅              |
+| fix/*     | ✅              |
+| hotfix/*  | ✅              |
+| release/* | ✅              |
+
+---
+
+# Output Contract
 
 Commit created + quality checks executed + auto-push + branch report.
 
-## Quality Bar
+---
 
-- Required format: `<icon> (<scope>): [<ai-flag>] <message>`
-- Message in English, imperative mood, ≤72 characters
-- Checks must pass (lint, typecheck, test)
-- Never commit broken code
-- Auto-push after commit
-- Report branch at the end
-- If checks fail, report errors and do not commit until resolved
+# Quality Bar
 
-## Format
+* Required format:
 
-```
-<icon> (<scope>): [<ai-flag>] <message in English>
-```
+  ```text
+  <icon> (<scope>): [<ai-flag>] <message> (#123)
+  ```
 
-- **icon**: Emoji representing the commit type (see Icon Reference below)
-- **scope**: Area of the codebase that changed (e.g., `auth`, `api`, `store`, `ui`, `skill`, `docs`, `config`)
-- **ai-flag**: Identifier of the AI agent making the commit (see table below)
-- **message**: Description in English, imperative mood, concise
+* Message in English
 
-> **Important:** The icon already conveys the TYPE of change (feat, fix, refactor, etc.).
-> The scope describes WHAT part of the codebase was affected.
-> For example: `✨ (auth): [codebuff] add OAuth login` — the icon ✨ means "new feature", the scope `auth` means the authentication module was changed.
+* Imperative mood
 
-### Icon Reference
+* ≤72 characters whenever possible
 
-| Icon | Type       | Description                                             |
-| ---- | ---------- | ------------------------------------------------------- |
-| ✨   | feat       | New feature                                             |
-| 🐛   | fix        | Bug fix                                                 |
-| 📚   | docs       | Documentation only                                      |
-| 💅   | style      | Code style (formatting, semicolons, etc.)               |
-| 🔧   | refactor   | Code change that neither fixes a bug nor adds a feature |
-| ⚡   | perf       | Performance improvement                                 |
-| ✅   | test       | Adding or correcting tests                              |
-| 📦   | build      | Build system or external dependencies                   |
-| 🔨   | ci         | CI configuration files and scripts                      |
-| 🧹   | chore      | Other changes that don't modify src or test             |
-| ⏪   | revert     | Reverts a previous commit                               |
+* Checks must pass
 
-### Common Scopes
+* Never commit broken code
 
-| Scope | When to use |
-| ----- | ----------- |
-| `auth` | Authentication, login, signup, OAuth |
-| `api` | Backend endpoints, API routes |
-| `store` | State management, store actions |
-| `ui` | UI components, layouts, styling |
-| `db` | Database, migrations, RLS policies |
-| `skill` | Skill files (.agents/skills/) |
-| `docs` | Documentation files (README, .md) |
-| `config` | Configuration files (tsconfig, vite, etc.) |
-| `ci` | CI/CD workflows, GitHub Actions |
-| `deps` | Package dependencies |
+* Auto-push after commit
 
-Use a descriptive scope when none of the above fit. The scope should be short (1-2 words).
+* Report branch at the end
 
-### AI Identifier Flags
+---
 
-Every commit made by an AI agent MUST include its identifier flag in square brackets.
+# Format
 
-| AI Agent         | Flag          |
-| ---------------- | ------------- |
-| Codebuff (Buffy) | `[codebuff]`  |
-| Claude           | `[claude]`    |
-| Cursor           | `[cursor]`    |
-| Copilot          | `[copilot]`   |
-| Other / Human    | _(omit flag)_ |
+## Non-main branches
 
-> **Rule:** Human commits do NOT include the flag. Only AI-generated commits include it.
-
-### Correct Format
-
-```
-✨ (auth): [codebuff] add login with Google
-🐛 (api): [codebuff] solve timeout on user endpoint
-🔧 (store): [codebuff] simplify state management
-📚 (docs): [claude] update installation guide
-✨ (skill): [codebuff] add commit-pattern skill
+```text
+<icon> (<scope>): [<ai-flag>] <message> (#123)
 ```
 
-### Wrong Format (NEVER USE)
+Examples:
 
+```text
+✨ (auth): [claude] add OAuth login support (#123)
+
+🐛 (api): [cursor] fix token refresh issue (#145)
+
+🔧 (skill): [copilot] update commit workflow rules (#120, #121)
 ```
-feat: add login with Google                          <- missing icon, scope, and flag
-fix: solve timeout on user endpoint                  <- missing icon, scope, and flag
-✨ add login with Google                              <- missing scope and flag
-✨ (feat): add login with Google                      <- scope should be area, not type
-✨ [Opencode AI] add login with Google               <- deprecated AI flag format
-✨ (feat): [codebuff] add login with Google (extra)   <- extra text after flag
+
+---
+
+## Main branch
+
+Release commits only:
+
+```text
+🚀 Release v1.4.0
 ```
 
-## Message Rules
+---
 
-1. **Always in English** — no exceptions
-2. **Imperative mood** — "add", not "added" or "adds"
-3. **First line ≤ 72 characters** (including icon, scope, and flag)
-4. **One logical change per commit** — don't mix unrelated changes
-5. **AI commits must include flag** — `[codebuff]`, `[claude]`, `[cursor]`, `[copilot]`
-6. **Human commits omit the flag** — no brackets
-7. **Reference issues** in the footer when applicable
+# Icon Reference
 
-## Pre-Commit Checks
+| Icon | Type     |
+| ---- | -------- |
+| ✨    | feat     |
+| 🐛   | fix      |
+| 📚   | docs     |
+| 💅   | style    |
+| 🔧   | refactor |
+| ⚡    | perf     |
+| ✅    | test     |
+| 📦   | build    |
+| 🔨   | ci       |
+| 🧹   | chore    |
+| ⏪    | revert   |
 
-**ALWAYS** run these checks before committing:
+---
+
+# Common Scopes
+
+| Scope  | Usage             |
+| ------ | ----------------- |
+| auth   | Authentication    |
+| api    | Backend endpoints |
+| store  | State management  |
+| ui     | Components/layout |
+| db     | Database          |
+| skill  | Skills            |
+| docs   | Documentation     |
+| config | Config files      |
+| ci     | CI/CD             |
+| deps   | Dependencies      |
+
+---
+
+# AI Identifier Flags
+
+| AI Agent | Flag         |
+| -------- | ------------ |
+| Codebuff | `[codebuff]` |
+| Claude   | `[claude]`   |
+| Cursor   | `[cursor]`   |
+| Copilot  | `[copilot]`  |
+
+Human commits omit the flag.
+
+---
+
+# Correct Examples
+
+```text
+✨ (auth): [claude] add OAuth login support (#123)
+
+🐛 (api): [cursor] fix timeout issue (#145)
+
+📚 (docs): [copilot] update installation guide (#110)
+
+🔧 (skill): [claude] improve commit workflow (#132)
+```
+
+---
+
+# Wrong Examples
+
+```text
+feat: add login
+
+✨ add login
+
+✨ (feat): add login
+
+✨ (auth): [claude] add login
+```
+
+(last example is invalid because issue reference is missing outside `main`)
+
+---
+
+# Message Rules
+
+1. English only.
+2. Imperative mood.
+3. One logical change per commit.
+4. AI commits must include flags.
+5. Non-main branches must include issue references.
+6. Main branch follows release workflow.
+
+---
+
+# Pre-Commit Checks
+
+Always run:
 
 ```bash
-# 1. Check for lint errors
 npm run lint
-
-# 2. Check for type errors
 npm run typecheck
-
-# 3. Run tests (if available)
 npm test
-
-# 4. Format code with Prettier (if configured)
 npx prettier --write .
 ```
 
-**If checks fail:**
+If checks fail:
 
-- Fix the errors before committing
-- Never commit broken code
-- If the fix is too large, log `// TODO(refactor):` and report at the end
+* Fix before commit.
+* Never commit broken code.
+* Report errors.
 
-## Auto-Push
+---
 
-After every commit, automatically push to the current branch:
+# Auto Push
 
 ```bash
 git push origin <current-branch>
 ```
 
-**Do not** ask for confirmation. Always push after commit.
+Always push after commit.
 
-## Branch Strategy
+---
 
-- **Never create new branches** for changes
-- Always work on the current active branch
-- At the end, report which branch the commit was pushed to
+# Workflow
 
-## Release Workflow (develop → main)
+1. `git status`
+2. Preserve unrelated changes.
+3. Modify only required files.
+4. Run checks.
+5. Stage only related files.
+6. Create commit.
+7. Push.
+8. Report branch.
 
-### `#release` Command
+---
 
-When the user types `#release`, execute the **full release cycle** automatically:
+# Release Workflow (`#release`)
 
-1. **Determine version** — Automatically analyze commits since last tag and determine version (major/minor/patch) based on semantic versioning rules. Only ask user if they explicitly specify a version (e.g., `#release v1.2.3`)
-2. **Check branch** — Ensure current branch is `develop` and working tree is clean
-3. **Merge develop → main**
-4. **Generate changelog** from commits since last tag
-5. **Update package.json** with new version
-6. **Create release commit** with changelog
-7. **Tag** with `v<version>`
-8. **Push** main + tag
-9. **Switch back** to develop
+`#release` executes:
 
-### Automated Version Determination
+1. Determine version automatically.
+2. Ensure clean `develop`.
+3. Merge `develop → main`.
+4. Generate changelog.
+5. Update package version.
+6. Create release commit.
+7. Create tag.
+8. Push main and tags.
+9. Return to develop.
 
-**DO NOT ask the user for version type.** Automatically determine the version by analyzing commits since the last tag:
+---
 
-```bash
-# Get commits since last tag
-COMMITS=$(git log $(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")..HEAD --pretty=format:"%s" --no-merges)
+# Version Rules
 
-# Analyze commit types and determine version
-if echo "$COMMITS" | grep -qE "^[💥🔥⚡]"; then
-  # Breaking changes → Major
-  VERSION_TYPE="major"
-elif echo "$COMMITS" | grep -qE "^✨"; then
-  # New features → Minor
-  VERSION_TYPE="minor"
-else
-  # Bug fixes, docs, chore, etc. → Patch
-  VERSION_TYPE="patch"
-fi
-```
+| Commit          | Version |
+| --------------- | ------- |
+| 💥 🔥           | major   |
+| ✨               | minor   |
+| everything else | patch   |
 
-**Version determination rules:**
-| Commit Icon | Version Bump | Description |
-|-------------|--------------|-------------|
-| 💥 or 🔥 | Major | Breaking changes |
-| ✨ | Minor | New features |
-| 🐛, 📚, 💅, 🔧, ⚡, ✅, 📦, 🔨, 🧹, ⏪ | Patch | Bug fixes, docs, maintenance, etc. |
+---
 
-### Explicit Version Override
+# Release Commit Format
 
-If the user specifies a version explicitly (e.g., `#release v2.0.0`), use that version instead of auto-determining:
-
-```bash
-# Parse user-specified version
-if [[ "$INPUT" =~ v([0-9]+)\.([0-9]+)\.([0-9]+) ]]; then
-  MAJOR=${BASH_REMATCH[1]}
-  MINOR=${BASH_REMATCH[2]}
-  PATCH=${BASH_REMATCH[3]}
-  VERSION="$MAJOR.$MINOR.$PATCH"
-else
-  # Auto-determine version from commits
-  # ... (see Automated Version Determination above)
-fi
-```
-
-### Automated Release Steps
-
-```bash
-# 1. Get current version from latest tag
-CURRENT=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
-CURRENT_VERSION=${CURRENT#v}
-
-# 2. Analyze commits and determine new version
-COMMITS=$(git log $CURRENT..HEAD --pretty=format:"%s" --no-merges)
-# ... (determine VERSION_TYPE from commits)
-
-# 3. Calculate new version based on VERSION_TYPE
-IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT_VERSION"
-case $VERSION_TYPE in
-  major) MAJOR=$((MAJOR + 1)); MINOR=0; PATCH=0 ;;
-  minor) MINOR=$((MINOR + 1)); PATCH=0 ;;
-  patch) PATCH=$((PATCH + 1)) ;;
-esac
-NEW_VERSION="$MAJOR.$MINOR.$PATCH"
-
-# 4. Ensure clean working tree on develop
-git checkout develop
-git pull origin develop
-
-# 5. Merge into main
-git checkout main
-git merge develop --no-ff -m "Merge develop into main for release"
-
-# 6. Update package.json with new version (if file exists)
-if [ -f "package.json" ]; then
-  sed -i "s/\"version\": \"$CURRENT_VERSION\"/\"version\": \"$NEW_VERSION\"/" package.json
-  git add package.json
-fi
-
-# 7. Generate changelog from commits since last tag
-LOG=$(git log $CURRENT..HEAD --pretty=format:"%s" --no-merges)
-# Parse into categories (✨ feat, 🐛 fix, 🔧 refactor, 📚 docs, 🧹 chore)
-# Format each commit as: • (scope): [ai-flag] description
-# Group by type under header: {icon} {type name}
-
-# 8. Create release commit
-git commit --allow-empty -m "🚀 Release v$NEW_VERSION
-
-✨ New features
-• (auth): [opencode] add OAuth login
-• (ui): [opencode] add dark mode toggle
-
-🐛 Bug fixes
-• (api): [opencode] solve timeout issue
-
-🔧 Refactor
-• (store): [opencode] simplify state management
-"
-
-# 9. Tag
-git tag -a v$NEW_VERSION -m "Release v$NEW_VERSION"
-
-# 10. Push
-git push origin main
-git push origin v$NEW_VERSION
-
-# 11. Switch back to develop
-git checkout develop
-```
-
-### Changelog Format
-
-The release commit message MUST follow this structure. Each commit type gets its own section with a header showing the icon and type name. Under each header, list **one bullet per commit** using Discord's native list format (`•`).
-
-**Format per line:**
-```
-• ({scope alterado}): [AI flag se existir] {descrição da alteração}
-```
-
-**Full structure:**
-```
-🚀 Release v<version>
-
-✨ New features
-• (scope): [ai-flag] description of feature
-• (scope): [ai-flag] description of another feature
-
-🐛 Bug fixes
-• (scope): [ai-flag] description of fix
-
-🔧 Refactor
-• (scope): [ai-flag] description of refactor
-
-📚 Documentation
-• (scope): [ai-flag] description of docs change
-
-🧹 Maintenance
-• (scope): [ai-flag] description of chore
-```
-
-**Rules:**
-1. **Header** = `{icon} {type name}` (e.g., `✨ New features`)
-2. **One bullet per commit** — each commit gets its own `•` line
-3. **Scope always in parentheses** — `• (auth): ...` not `• auth: ...`
-4. **AI flag only if AI made the commit** — omit for human commits
-5. **Group by type** — if there are 3 features and 2 fixes, you get 2 sections (Features and Bug fixes) with 3 and 2 bullets respectively
-6. **Skip empty sections** — if no docs changes, don't include the Documentation header
-7. **Description** — keep the original commit message (imperative mood, English)
-
-**Example with mixed commits:**
-```
+```text
 🚀 Release v1.2.0
 
 ✨ New features
-• (auth): [opencode] add OAuth login with Google
-• (ui): [opencode] add dark mode toggle
-• (api): [opencode] add rate limiting endpoint
+• (auth): [claude] add OAuth login (#123)
 
 🐛 Bug fixes
-• (api): [opencode] solve timeout on user endpoint
-• (auth): [opencode] fix token refresh race condition
-• (ui): fix button alignment on mobile
+• (api): [cursor] fix timeout issue (#145)
 
 🔧 Refactor
-• (store): [opencode] simplify state management
+• (store): [copilot] simplify state management (#130)
 ```
 
-### Versioning Rules
+Issue references are optional inside release changelogs.
 
-| Version   | When to use                         | Example           |
-| --------- | ----------------------------------- | ----------------- |
-| **Major** | Breaking API changes                | `1.0.0` → `2.0.0` |
-| **Minor** | New features (backwards compatible) | `1.0.0` → `1.1.0` |
-| **Patch** | Bug fixes (backwards compatible)    | `1.0.0` → `1.0.1` |
+---
 
-### Release Checklist
+# Full Traceability Flow
 
-- [ ] All features merged from develop
-- [ ] Version automatically determined from commits
-- [ ] package.json updated with new version
-- [ ] Release commit created with proper format and changelog
-- [ ] Pushed to main
-- [ ] Tag created: `git tag v<version>`
-- [ ] Switched back to develop
-
-## Workflow
-
-1. Run `git status` before making changes
-2. Preserve existing changes not made by you
-3. Edit only the necessary files
-4. Run build/lint/test checks
-5. Stage only files related to the change
-6. Create commit with proper message format (including AI flag if applicable)
-7. Push to current branch
-8. Report completion status
-
-## Examples
-
-### Feature Addition (AI commit)
-
-```bash
-git add src/components/Header.tsx
-git commit -m "✨ (ui): [codebuff] add user avatar display"
-git push origin main
+```text
+GitHub Issue
+      ↓
+Development Request
+      ↓
+Branch
+      ↓
+Commit
+      ↓
+Release
 ```
 
-### Bug Fix (AI commit)
+Example:
 
-```bash
-git add src/services/api.ts
-git commit -m "🐛 (api): [codebuff] solve timeout on user endpoint"
-git push origin main
+```text
+Issue #123
+      ↓
+Implement OAuth login
+      ↓
+feature/oauth-login
+      ↓
+✨ (auth): [claude] add OAuth login support (#123)
+      ↓
+🚀 Release v1.4.0
 ```
 
-### Refactor (AI commit)
+---
 
-```bash
-git add src/hooks/useAuth.ts src/utils/auth.ts
-git commit -m "🔧 (auth): [codebuff] simplify authentication flow"
-git push origin main
+# Examples
+
+## User Input
+
+```text
+Issue: #123
+
+Implement OAuth login.
 ```
 
-### Skill Addition (AI commit)
+## Generated Commit
 
-```bash
-git add .agents/skills/vercel-deploy-notification/SKILL.md
-git commit -m "✨ (skill): [codebuff] add vercel-deploy-notification skill"
-git push origin main
+```text
+✨ (auth): [claude] add OAuth login support (#123)
 ```
 
-### Human Commit (no flag)
+---
 
-```bash
-git add src/styles.css
-git commit -m "💅 (ui): update button border radius"
-git push origin develop
+## Multiple Issues
+
+```text
+Issues:
+- #120
+- #121
+```
+
+↓
+
+```text
+🔧 (auth): [claude] simplify oauth flow (#120, #121)
+```
+
+---
+
+## Missing Issue
+
+```text
+User:
+Implement OAuth login.
+```
+
+↓
+
+```text
+Assistant:
+
+Please provide the related GitHub issue number before committing.
+
+Example:
+Issue: #123
 ```
