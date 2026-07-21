@@ -1,4 +1,3 @@
-````md
 ---
 name: commit-pattern
 description: Use when committing code to apply standardized commit format with icons, issue references, AI flags, run quality checks before commit, and auto-push.
@@ -431,4 +430,3 @@ Please provide the related GitHub issue number before committing.
 
 Example:
 Issue: #123
-```
