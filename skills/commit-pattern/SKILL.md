@@ -1,4 +1,3 @@
-````md
 ---
 name: commit-pattern
 description: Use when committing code to apply standardized commit format with icons, issue references, AI flags, run quality checks before commit, and auto-push.
@@ -55,11 +54,11 @@ release/*
 ### Commit format
 
 ```text
-✨ (auth): [claude] add OAuth login support (#123)
+✨ (auth): [claude] add OAuth login support #123
 
-🐛 (api): [cursor] fix token refresh issue (#145)
+🐛 (api): [cursor] fix token refresh issue #145
 
-🔧 (auth): [copilot] simplify oauth flow (#120, #121)
+🔧 (auth): [copilot] simplify oauth flow #120, #121
 ```
 
 ---
@@ -126,7 +125,7 @@ Commit created + quality checks executed + auto-push + branch report.
 * Required format:
 
   ```text
-  <icon> (<scope>): [<ai-flag>] <message> (#123)
+  <icon> (<scope>): [<ai-flag>] <message> #123
   ```
 
 * Message in English
@@ -150,17 +149,17 @@ Commit created + quality checks executed + auto-push + branch report.
 ## Non-main branches
 
 ```text
-<icon> (<scope>): [<ai-flag>] <message> (#123)
+<icon> (<scope>): [<ai-flag>] <message> #123
 ```
 
 Examples:
 
 ```text
-✨ (auth): [claude] add OAuth login support (#123)
+✨ (auth): [claude] add OAuth login support #123
 
-🐛 (api): [cursor] fix token refresh issue (#145)
+🐛 (api): [cursor] fix token refresh issue #145
 
-🔧 (skill): [copilot] update commit workflow rules (#120, #121)
+🔧 (skill): [copilot] update commit workflow rules #120, #121
 ```
 
 ---
@@ -226,13 +225,13 @@ Human commits omit the flag.
 # Correct Examples
 
 ```text
-✨ (auth): [claude] add OAuth login support (#123)
+✨ (auth): [claude] add OAuth login support #123
 
-🐛 (api): [cursor] fix timeout issue (#145)
+🐛 (api): [cursor] fix timeout issue #145
 
-📚 (docs): [copilot] update installation guide (#110)
+📚 (docs): [copilot] update installation guide #110
 
-🔧 (skill): [claude] improve commit workflow (#132)
+🔧 (skill): [claude] improve commit workflow #132
 ```
 
 ---
@@ -338,13 +337,13 @@ Always push after commit.
 🚀 Release v1.2.0
 
 ✨ New features
-• (auth): [claude] add OAuth login (#123)
+• (auth): [claude] add OAuth login #123
 
 🐛 Bug fixes
-• (api): [cursor] fix timeout issue (#145)
+• (api): [cursor] fix timeout issue #145
 
 🔧 Refactor
-• (store): [copilot] simplify state management (#130)
+• (store): [copilot] simplify state management #130
 ```
 
 Issue references are optional inside release changelogs.
@@ -374,7 +373,7 @@ Implement OAuth login
       ↓
 feature/oauth-login
       ↓
-✨ (auth): [claude] add OAuth login support (#123)
+✨ (auth): [claude] add OAuth login support #123
       ↓
 🚀 Release v1.4.0
 ```
@@ -394,7 +393,7 @@ Implement OAuth login.
 ## Generated Commit
 
 ```text
-✨ (auth): [claude] add OAuth login support (#123)
+✨ (auth): [claude] add OAuth login support #123
 ```
 
 ---
@@ -410,7 +409,7 @@ Issues:
 ↓
 
 ```text
-🔧 (auth): [claude] simplify oauth flow (#120, #121)
+🔧 (auth): [claude] simplify oauth flow #120, #121
 ```
 
 ---
@@ -431,4 +430,3 @@ Please provide the related GitHub issue number before committing.
 
 Example:
 Issue: #123
-```
