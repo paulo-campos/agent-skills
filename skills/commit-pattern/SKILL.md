@@ -21,7 +21,7 @@ Preferred input:
 Issue: #123
 
 Implement OAuth login.
-````
+```
 
 Or:
 
@@ -105,42 +105,42 @@ The `main` branch follows the release workflow and uses release commits:
 
 | Branch    | Require Issues |
 | --------- | -------------- |
-| main      | ❌              |
-| develop   | ✅              |
-| feature/* | ✅              |
-| fix/*     | ✅              |
-| hotfix/*  | ✅              |
-| release/* | ✅              |
+| main      | ❌             |
+| develop   | ✅             |
+| feature/* | ✅             |
+| fix/*     | ✅             |
+| hotfix/*  | ✅             |
+| release/* | ✅             |
 
 ---
 
 # Output Contract
 
-Commit created + quality checks executed + auto-push + branch report.
+Commit created + quality checks executed + push (main/tags only) + branch report.
 
 ---
 
 # Quality Bar
 
-* Required format:
+- Required format:
 
   ```text
   <icon> (<scope>): [<ai-flag>] <message> #123
   ```
 
-* Message in English
+- Message in English
 
-* Imperative mood
+- Imperative mood
 
-* ≤72 characters whenever possible
+- ≤72 characters whenever possible
 
-* Checks must pass
+- Checks must pass
 
-* Never commit broken code
+- Never commit broken code
 
-* Auto-push after commit
+- Push only on `main` and release tags (never on `develop`, `feature/*`, `fix/*`, `hotfix/*`, `release/*`)
 
-* Report branch at the end
+- Report branch at the end
 
 ---
 
@@ -178,17 +178,17 @@ Release commits only:
 
 | Icon | Type     |
 | ---- | -------- |
-| ✨    | feat     |
+| ✨   | feat     |
 | 🐛   | fix      |
 | 📚   | docs     |
 | 💅   | style    |
 | 🔧   | refactor |
-| ⚡    | perf     |
-| ✅    | test     |
+| ⚡   | perf     |
+| ✅   | test     |
 | 📦   | build    |
 | 🔨   | ci       |
 | 🧹   | chore    |
-| ⏪    | revert   |
+| ⏪   | revert   |
 
 ---
 
@@ -276,19 +276,34 @@ npx prettier --write .
 
 If checks fail:
 
-* Fix before commit.
-* Never commit broken code.
-* Report errors.
+- Fix before commit.
+- Never commit broken code.
+- Report errors.
 
 ---
 
 # Auto Push
 
-```bash
-git push origin <current-branch>
-```
+Push only occurs in specific scenarios:
 
-Always push after commit.
+### Allowed pushes
+
+| Scenario          | Command                 |
+| ----------------- | ----------------------- |
+| Release on `main` | `git push origin main`  |
+| Release tag       | `git push origin <tag>` |
+
+### Prohibited pushes
+
+Do **NOT** push on:
+
+- `develop` branch
+- `feature/*` branches
+- `fix/*` branches
+- `hotfix/*` branches
+- `release/*` branches
+
+Commits on non-main branches stay local until merged via the release workflow.
 
 ---
 
@@ -300,7 +315,7 @@ Always push after commit.
 4. Run checks.
 5. Stage only related files.
 6. Create commit.
-7. Push.
+7. Push (only on `main` or release tags).
 8. Report branch.
 
 ---
@@ -316,7 +331,7 @@ Always push after commit.
 5. Update package version.
 6. Create release commit.
 7. Create tag.
-8. Push main and tags.
+8. Push `main` and tags.
 9. Return to develop.
 
 ---
@@ -326,7 +341,7 @@ Always push after commit.
 | Commit          | Version |
 | --------------- | ------- |
 | 💥 🔥           | major   |
-| ✨               | minor   |
+| ✨              | minor   |
 | everything else | patch   |
 
 ---
@@ -430,3 +445,4 @@ Please provide the related GitHub issue number before committing.
 
 Example:
 Issue: #123
+```
