@@ -116,7 +116,7 @@ The `main` branch follows the release workflow and uses release commits:
 
 # Output Contract
 
-Commit created + quality checks executed + auto-push + branch report.
+Commit created + quality checks executed + push (main/tags only) + branch report.
 
 ---
 
@@ -138,7 +138,7 @@ Commit created + quality checks executed + auto-push + branch report.
 
 * Never commit broken code
 
-* Auto-push after commit
+* Push only on `main` and release tags (never on `develop`, `feature/*`, `fix/*`, `hotfix/*`, `release/*`)
 
 * Report branch at the end
 
@@ -284,11 +284,26 @@ If checks fail:
 
 # Auto Push
 
-```bash
-git push origin <current-branch>
-```
+Push only occurs in specific scenarios:
 
-Always push after commit.
+### Allowed pushes
+
+| Scenario            | Command                              |
+| ------------------- | ------------------------------------ |
+| Release on `main`   | `git push origin main`               |
+| Release tag         | `git push origin <tag>`              |
+
+### Prohibited pushes
+
+Do **NOT** push on:
+
+- `develop` branch
+- `feature/*` branches
+- `fix/*` branches
+- `hotfix/*` branches
+- `release/*` branches
+
+Commits on non-main branches stay local until merged via the release workflow.
 
 ---
 
@@ -300,7 +315,7 @@ Always push after commit.
 4. Run checks.
 5. Stage only related files.
 6. Create commit.
-7. Push.
+7. Push (only on `main` or release tags).
 8. Report branch.
 
 ---
@@ -316,7 +331,7 @@ Always push after commit.
 5. Update package version.
 6. Create release commit.
 7. Create tag.
-8. Push main and tags.
+8. Push `main` and tags.
 9. Return to develop.
 
 ---
