@@ -155,7 +155,7 @@ Every commit made by an AI agent MUST include its identifier flag in square brac
 ✨ (auth): [codebuff] add login with Google
 🐛 (api): [codebuff] solve timeout on user endpoint
 🔧 (store): [codebuff] simplify state management
-📚 (docs): [claude] update installation guide
+📚 (docs): [<ai-flag>] update installation guide
 ✨ (skill): [codebuff] add commit-pattern skill
 ```
 

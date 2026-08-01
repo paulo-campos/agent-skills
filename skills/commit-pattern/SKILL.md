@@ -54,11 +54,11 @@ release/*
 ### Commit format
 
 ```text
-✨ (auth): [claude] add OAuth login support #123
+✨ (auth): [<ai-flag>] add OAuth login support #123
 
-🐛 (api): [cursor] fix token refresh issue #145
+🐛 (api): [<ai-flag>] fix token refresh issue #145
 
-🔧 (auth): [copilot] simplify oauth flow #120, #121
+🔧 (auth): [<ai-flag>] simplify oauth flow #120, #121
 ```
 
 ---
@@ -155,11 +155,11 @@ Commit created + quality checks executed + push (main/tags only) + branch report
 Examples:
 
 ```text
-✨ (auth): [claude] add OAuth login support #123
+✨ (auth): [<ai-flag>] add OAuth login support #123
 
-🐛 (api): [cursor] fix token refresh issue #145
+🐛 (api): [<ai-flag>] fix token refresh issue #145
 
-🔧 (skill): [copilot] update commit workflow rules #120, #121
+🔧 (skill): [<ai-flag>] update commit workflow rules #120, #121
 ```
 
 ---
@@ -225,13 +225,13 @@ Human commits omit the flag.
 # Correct Examples
 
 ```text
-✨ (auth): [claude] add OAuth login support #123
+✨ (auth): [<ai-flag>] add OAuth login support #123
 
-🐛 (api): [cursor] fix timeout issue #145
+🐛 (api): [<ai-flag>] fix timeout issue #145
 
-📚 (docs): [copilot] update installation guide #110
+📚 (docs): [<ai-flag>] update installation guide #110
 
-🔧 (skill): [claude] improve commit workflow #132
+🔧 (skill): [<ai-flag>] improve commit workflow #132
 ```
 
 ---
@@ -245,7 +245,7 @@ feat: add login
 
 ✨ (feat): add login
 
-✨ (auth): [claude] add login
+✨ (auth): [<ai-flag>] add login
 ```
 
 (last example is invalid because issue reference is missing outside `main`)
@@ -355,9 +355,9 @@ creates the subject line and discards the body.
 ```bash
 git commit -m '🚀 Release v1.2.0' \
   -m '✨ New features' \
-  -m '• (auth): [claude] add OAuth login #123' \
+  -m '• (auth): [<ai-flag>] add OAuth login #123' \
   -m '🐛 Bug fixes' \
-  -m '• (api): [claude] fix timeout #145'
+  -m '• (api): [<ai-flag>] fix timeout #145'
 Wrong:
 // bash
 git commit -m '🚀 Release v1.2.0\n\n✨ New features\n• (auth)...'
@@ -380,13 +380,13 @@ Each  -m  adds a separate paragraph separated by a blank line.
 🚀 Release v1.2.0
 
 ✨ New features
-• (auth): [claude] add OAuth login #123
+• (auth): [<ai-flag>] add OAuth login #123
 
 🐛 Bug fixes
-• (api): [cursor] fix timeout issue #145
+• (api): [<ai-flag>] fix timeout issue #145
 
 🔧 Refactor
-• (store): [copilot] simplify state management #130
+• (store): [<ai-flag>] simplify state management #130
 ```
 
 Issue references are optional inside release changelogs.
@@ -416,7 +416,7 @@ Implement OAuth login
       ↓
 feature/oauth-login
       ↓
-✨ (auth): [claude] add OAuth login support #123
+✨ (auth): [<ai-flag>] add OAuth login support #123
       ↓
 🚀 Release v1.4.0
 ```
@@ -436,7 +436,7 @@ Implement OAuth login.
 ## Generated Commit
 
 ```text
-✨ (auth): [claude] add OAuth login support #123
+✨ (auth): [<ai-flag>] add OAuth login support #123
 ```
 
 ---
@@ -452,7 +452,7 @@ Issues:
 ↓
 
 ```text
-🔧 (auth): [claude] simplify oauth flow #120, #121
+🔧 (auth): [<ai-flag>] simplify oauth flow #120, #121
 ```
 
 ---
