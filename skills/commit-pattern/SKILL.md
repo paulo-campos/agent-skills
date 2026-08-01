@@ -346,6 +346,34 @@ Commits on non-main branches stay local until merged via the release workflow.
 
 ---
 
+# Release Commit — Git Command
+ 
+ALWAYS use multiple `-m` flags for release commits. A single `-m` only 
+creates the subject line and discards the body.
+ 
+**Correct:**
+```bash
+git commit -m '🚀 Release v1.2.0' \
+  -m '✨ New features' \
+  -m '• (auth): [claude] add OAuth login #123' \
+  -m '🐛 Bug fixes' \
+  -m '• (api): [claude] fix timeout #145'
+Wrong:
+// bash
+git commit -m '🚀 Release v1.2.0\n\n✨ New features\n• (auth)...'
+# \n does NOT create line breaks in git commit messages
+Each  -m  adds a separate paragraph separated by a blank line.
+ 
+### 3. Adicione uma regra na "Message Rules"
+ 
+```markdown
+7. Release commits on `main` MUST use multiple `-m` flags to include body.
+4. Adicione um "Wrong Example" para releases
+// markdown
+# Wrong Examples (releases)
+
+---
+
 # Release Commit Format
 
 ```text
