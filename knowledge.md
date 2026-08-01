@@ -8,11 +8,4 @@
 
 ## Commit Pattern
 
-When committing code, follow the rules defined in `skills/commit-pattern/SKILL.md` of this repository. Do NOT install the skill — just read and apply the rules directly.
-
-Key rules:
-- Use icon-based format: `<icon> (<scope>): [<ai-flag>] <message in English>`
-- Always include the AI flag (e.g., `[opencode]`) for AI commits
-- Run pre-commit checks (lint, typecheck, tests) before committing
-- Auto-push after every commit
-- For `#release`, generate the changelog using Discord bullet format (`•`): `• (scope): [ai-flag] description` — one bullet per commit, grouped by type
+When committing code, read and follow `skills/commit-pattern/SKILL.md` of this repository. Do NOT install the skill — just read and apply the rules directly.

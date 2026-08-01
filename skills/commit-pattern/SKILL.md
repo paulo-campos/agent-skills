@@ -250,6 +250,12 @@ feat: add login
 
 (last example is invalid because issue reference is missing outside `main`)
 
+### Wrong Examples (releases)
+
+```text
+git commit -m '🚀 Release v1.2.0\n\n✨ New features\n• (auth)...'
+```
+
 ---
 
 # Message Rules
@@ -260,6 +266,7 @@ feat: add login
 4. AI commits must include flags.
 5. Non-main branches must include issue references.
 6. Main branch follows release workflow.
+7. Release commits on `main` MUST use multiple `-m` flags to include body.
 
 ---
 
@@ -358,19 +365,15 @@ git commit -m '🚀 Release v1.2.0' \
   -m '• (auth): [<ai-flag>] add OAuth login #123' \
   -m '🐛 Bug fixes' \
   -m '• (api): [<ai-flag>] fix timeout #145'
-Wrong:
-// bash
+```
+
+**Wrong:**
+```bash
 git commit -m '🚀 Release v1.2.0\n\n✨ New features\n• (auth)...'
 # \n does NOT create line breaks in git commit messages
-Each  -m  adds a separate paragraph separated by a blank line.
- 
-### 3. Adicione uma regra na "Message Rules"
- 
-```markdown
-7. Release commits on `main` MUST use multiple `-m` flags to include body.
-4. Adicione um "Wrong Example" para releases
-// markdown
-# Wrong Examples (releases)
+```
+
+Each `-m` adds a separate paragraph separated by a blank line.
 
 ---
 
