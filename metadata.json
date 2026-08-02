@@ -1,6 +1,6 @@
 {
   "name": "agent-skills",
-  "version": "1.6.3",
+  "version": "1.6.5",
   "description": "Reusable AI agent skills for coding workflows",
   "author": "Paulo Campos",
   "license": "MIT",
