@@ -139,6 +139,7 @@ Commit created + quality checks executed + push (main/tags only) + branch report
 - Never commit broken code
 
 - Push only on `main` and release tags (never on `develop`, `feature/*`, `fix/*`, `hotfix/*`, `release/*`)
+- Never use `--no-verify` in commits or pushes
 
 - Report branch at the end
 
