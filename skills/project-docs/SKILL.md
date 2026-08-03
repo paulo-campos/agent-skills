@@ -54,6 +54,8 @@ Every project MUST have this structure:
 
 ```
 project/
+├── AGENTS.md                     # AI agent instructions (REQUIRED)
+├── knowledge.md                  # Knowledge base rules (REQUIRED)
 ├── README.md                    # Entry point
 ├── docs/
 │   ├── PROJECT_VISION.md        # What and why
@@ -66,6 +68,50 @@ project/
 │       ├── getting-started.md
 │       ├── development.md
 │       └── deployment.md
+```
+
+## 📜 Required Files Rules
+
+### AGENTS.md (REQUIRED)
+
+Every project MUST have an `AGENTS.md` file in the root with this EXACT content:
+
+```markdown
+# AGENTS
+
+Read and follow `knowledge.md` at the root of this project. Execute everything it says.
+
+Skills provide specialized instructions and workflows for specific tasks.
+Use the skill tool to load a skill when a task matches its description.
+
+<available_skills>
+  <!-- List installed skills here -->
+</available_skills>
+```
+
+**Rules for AGENTS.md:**
+- MUST be in the project root
+- MUST reference `knowledge.md`
+- MUST NOT contain any other instructions
+- MUST list available skills in `<available_skills>` section
+- NEVER add extra rules or explanations
+
+### knowledge.md (REQUIRED)
+
+Every project MUST have a `knowledge.md` file in the root with project-specific rules:
+
+```markdown
+# Knowledge
+
+## Skills
+
+- Always follow the instructions of installed skills
+- When a skill applies to the current task, load and follow its workflow completely
+- Never skip skill steps — execute them in order as documented
+
+## Project Rules
+
+<!-- Add project-specific rules here -->
 ```
 
 ## 🎨 Icon System
@@ -277,20 +323,35 @@ What this means for the project
 
 ### When Project Changes
 
+> **⚠️ CRITICAL RULE: EVERY code change MUST be accompanied by documentation update if the change affects documented functionality.**
+
 1. **Identify what changed**
    - New feature → Update ROADMAP.md
    - Bug fix → Update CHANGELOG.md
    - Decision → Create ADR
+   - API change → Update ARCHITECTURE.md
+   - Config change → Update relevant docs
 
 2. **Update affected documentation**
    - README.md if structure changed
    - ARCHITECTURE.md if components changed
    - STATUS.md if progress changed
+   - CHANGELOG.md for ALL changes
+   - Any doc that references the changed code
 
-3. **Maintain consistency**
+3. **Mandatory Documentation Checks**
+   - Does any documentation mention the changed code? → UPDATE IT
+   - Is the change visible to users? → DOCUMENT IT
+   - Did behavior change? → Update examples and descriptions
+   - New file/function added? → Add to relevant docs
+   - File/function removed? → Remove from docs
+
+4. **Maintain consistency**
    - Use same icons
    - Follow same format
    - Keep same structure
+
+> **NEVER commit code changes without checking if documentation needs update. If in doubt, update the documentation.**
 
 ## ✅ Quality Checklist
 
