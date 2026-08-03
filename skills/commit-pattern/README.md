@@ -209,15 +209,39 @@ npx prettier --write .
 
 ---
 
-## 🚀 Auto-Push
+## ⚠️ CRITICAL: Push and Merge Rules
 
-After every commit, automatically push to the current branch:
+> **NEVER execute `git push` or `git merge` unless the user EXPLICITLY requests it in the same message.**
 
-```bash
-git push origin <current-branch>
-```
+### Absolute Rules
 
-**Do not** ask for confirmation. Always push after commit.
+1. **NEVER push after commit** — commits stay LOCAL by default
+2. **NEVER merge branches** — unless user explicitly says "merge"
+3. **NEVER assume permission** — even if user allowed it before, each request is independent
+4. **ONLY exception: `#release` command** — this is the ONLY time push/merge happens automatically
+
+### What User Must Say
+
+| Action | Required User Input |
+| ------ | ------------------- |
+| Push   | "push", "enviar", "push it" |
+| Merge  | "merge", "juntar", "merge branch X into Y" |
+| Release| `#release` |
+
+### Prohibited Actions (NEVER DO)
+
+- `git push` — unless user explicitly requests
+- `git push origin <branch>` — unless user explicitly requests
+- `git merge` — unless user explicitly requests
+- `git merge <branch>` — unless user explicitly requests
+- `git checkout main && git merge develop` — ONLY via `#release`
+
+### Important
+
+- Each conversation is independent — permission granted once does NOT carry over
+- After `#release`, do NOT assume you can push again — wait for explicit request
+- If unsure, ASK before pushing or merging
+- Report what you did, never assume what you can do
 
 ---
 

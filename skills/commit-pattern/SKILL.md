@@ -317,28 +317,52 @@ If checks fail:
 
 ---
 
-# Auto Push
+# ⚠️ CRITICAL: Push and Merge Rules
 
-Push only occurs in specific scenarios:
+> **NEVER execute `git push` or `git merge` unless the user EXPLICITLY requests it in the same message.**
 
-### Allowed pushes
+### Absolute Rules
 
-| Scenario          | Command                 |
-| ----------------- | ----------------------- |
-| Release on `main` | `git push origin main`  |
-| Release tag       | `git push origin <tag>` |
+1. **NEVER push after commit** — commits stay LOCAL by default
+2. **NEVER merge branches** — unless user explicitly says "merge"
+3. **NEVER assume permission** — even if user allowed it before, each request is independent
+4. **ONLY exception: `#release` command** — this is the ONLY time push/merge happens automatically
 
-### Prohibited pushes
+### What User Must Say
 
-Do **NOT** push on:
+| Action | Required User Input |
+| ------ | ------------------- |
+| Push   | "push", "enviar", "push it" |
+| Merge  | "merge", "juntar", "merge branch X into Y" |
+| Release| `#release` |
 
-- `develop` branch
-- `feature/*` branches
-- `fix/*` branches
-- `hotfix/*` branches
-- `release/*` branches
+### Prohibited Actions (NEVER DO)
 
-Commits on non-main branches stay local until merged via the release workflow.
+- `git push` — unless user explicitly requests
+- `git push origin <branch>` — unless user explicitly requests
+- `git merge` — unless user explicitly requests
+- `git merge <branch>` — unless user explicitly requests
+- `git checkout main && git merge develop` — ONLY via `#release`
+
+### Important
+
+- Each conversation is independent — permission granted once does NOT carry over
+- After `#release`, do NOT assume you can push again — wait for explicit request
+- If unsure, ASK before pushing or merging
+- Report what you did, never assume what you can do
+
+---
+
+# Workflow
+
+1. `git status`
+2. Preserve unrelated changes.
+3. Modify only required files.
+4. Run checks.
+5. Stage only related files.
+6. Create commit.
+7. **STOP** — do NOT push unless explicitly asked.
+8. Report branch and that commit is LOCAL only.
 
 ---
 
