@@ -54,7 +54,7 @@ Commit created + quality checks executed + auto-push + branch report.
 
 ## ✅ Quality Bar
 
-- Required format: `<icon> (<scope>): [<ai-flag>] <message>`
+- Required format: `<icon> (<scope>): [{ai-flag}] <message>`
 - Message in English, imperative mood, ≤72 characters
 - Checks must pass (lint, typecheck, test)
 - Never commit broken code
@@ -67,7 +67,7 @@ Commit created + quality checks executed + auto-push + branch report.
 ## 📝 Commit Format
 
 ```
-<icon> (<scope>): [<ai-flag>] <message in English>
+<icon> (<scope>): [{ai-flag}] <message in English>
 ```
 
 | Component | Description | Example |
@@ -155,7 +155,7 @@ Every commit made by an AI agent MUST include its identifier flag in square brac
 ✨ (auth): [codebuff] add login with Google
 🐛 (api): [codebuff] solve timeout on user endpoint
 🔧 (store): [codebuff] simplify state management
-📚 (docs): [<ai-flag>] update installation guide
+📚 (docs): [{ai-flag}] update installation guide
 ✨ (skill): [codebuff] add commit-pattern skill
 ```
 

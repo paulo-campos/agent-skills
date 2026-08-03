@@ -54,11 +54,11 @@ release/*
 ### Commit format
 
 ```text
-✨ (auth): [<ai-flag>] add OAuth login support #123
+✨ (auth): [{ai-flag}] add OAuth login support #123
 
-🐛 (api): [<ai-flag>] fix token refresh issue #145
+🐛 (api): [{ai-flag}] fix token refresh issue #145
 
-🔧 (auth): [<ai-flag>] simplify oauth flow #120, #121
+🔧 (auth): [{ai-flag}] simplify oauth flow #120, #121
 ```
 
 ---
@@ -125,7 +125,7 @@ Commit created + quality checks executed + push (main/tags only) + branch report
 - Required format:
 
   ```text
-  <icon> (<scope>): [<ai-flag>] <message> #123
+  <icon> (<scope>): [{ai-flag}] <message> #123
   ```
 
 - Message in English
@@ -150,17 +150,17 @@ Commit created + quality checks executed + push (main/tags only) + branch report
 ## Non-main branches
 
 ```text
-<icon> (<scope>): [<ai-flag>] <message> #123
+<icon> (<scope>): [{ai-flag}] <message> #123
 ```
 
 Examples:
 
 ```text
-✨ (auth): [<ai-flag>] add OAuth login support #123
+✨ (auth): [{ai-flag}] add OAuth login support #123
 
-🐛 (api): [<ai-flag>] fix token refresh issue #145
+🐛 (api): [{ai-flag}] fix token refresh issue #145
 
-🔧 (skill): [<ai-flag>] update commit workflow rules #120, #121
+🔧 (skill): [{ai-flag}] update commit workflow rules #120, #121
 ```
 
 ---
@@ -223,16 +223,43 @@ Human commits omit the flag.
 
 ---
 
+# AI Flag Replacement
+
+The placeholder `{ai-flag}` MUST be replaced with the actual flag from the table above.
+
+**Rules:**
+- Replace `{ai-flag}` with `[flag-name]` (e.g., `[opencode]`, `[claude]`)
+- Do NOT include the curly braces `{}` in the output
+- Do NOT add angle brackets `< >` around the flag
+- The square brackets `[]` ARE part of the final format
+
+**Examples:**
+
+| Placeholder | Correct Output |
+| ----------- | -------------- |
+| `{ai-flag}` | `[opencode]`   |
+| `{ai-flag}` | `[claude]`     |
+| `{ai-flag}` | `[codebuff]`   |
+
+**Wrong:**
+```text
+✨ (auth): [{ai-flag}] add login #123    ← placeholder not replaced
+✨ (auth): [<opencode>] add login #123   ← angle brackets added incorrectly
+✨ (auth): [opencode] add login #123     ← correct
+```
+
+---
+
 # Correct Examples
 
 ```text
-✨ (auth): [<ai-flag>] add OAuth login support #123
+✨ (auth): [{ai-flag}] add OAuth login support #123
 
-🐛 (api): [<ai-flag>] fix timeout issue #145
+🐛 (api): [{ai-flag}] fix timeout issue #145
 
-📚 (docs): [<ai-flag>] update installation guide #110
+📚 (docs): [{ai-flag}] update installation guide #110
 
-🔧 (skill): [<ai-flag>] improve commit workflow #132
+🔧 (skill): [{ai-flag}] improve commit workflow #132
 ```
 
 ---
@@ -246,7 +273,7 @@ feat: add login
 
 ✨ (feat): add login
 
-✨ (auth): [<ai-flag>] add login
+✨ (auth): [{ai-flag}] add login
 ```
 
 (last example is invalid because issue reference is missing outside `main`)
@@ -363,9 +390,9 @@ creates the subject line and discards the body.
 ```bash
 git commit -m '🚀 Release v1.2.0' \
   -m '✨ New features' \
-  -m '• (auth): [<ai-flag>] add OAuth login #123' \
+  -m '• (auth): [{ai-flag}] add OAuth login #123' \
   -m '🐛 Bug fixes' \
-  -m '• (api): [<ai-flag>] fix timeout #145'
+  -m '• (api): [{ai-flag}] fix timeout #145'
 ```
 
 **Wrong:**
@@ -384,13 +411,13 @@ Each `-m` adds a separate paragraph separated by a blank line.
 🚀 Release v1.2.0
 
 ✨ New features
-• (auth): [<ai-flag>] add OAuth login #123
+• (auth): [{ai-flag}] add OAuth login #123
 
 🐛 Bug fixes
-• (api): [<ai-flag>] fix timeout issue #145
+• (api): [{ai-flag}] fix timeout issue #145
 
 🔧 Refactor
-• (store): [<ai-flag>] simplify state management #130
+• (store): [{ai-flag}] simplify state management #130
 ```
 
 Issue references are optional inside release changelogs.
@@ -420,7 +447,7 @@ Implement OAuth login
       ↓
 feature/oauth-login
       ↓
-✨ (auth): [<ai-flag>] add OAuth login support #123
+✨ (auth): [{ai-flag}] add OAuth login support #123
       ↓
 🚀 Release v1.4.0
 ```
@@ -440,7 +467,7 @@ Implement OAuth login.
 ## Generated Commit
 
 ```text
-✨ (auth): [<ai-flag>] add OAuth login support #123
+✨ (auth): [{ai-flag}] add OAuth login support #123
 ```
 
 ---
@@ -456,7 +483,7 @@ Issues:
 ↓
 
 ```text
-🔧 (auth): [<ai-flag>] simplify oauth flow #120, #121
+🔧 (auth): [{ai-flag}] simplify oauth flow #120, #121
 ```
 
 ---
