@@ -25,7 +25,7 @@ npx skills add paulo-campos/agent-skills --skill vercel-deploy-notification --ye
 
 Standardized commit format:
 ```
-<icon> (<scope>): [<ai-flag>] <message>
+<icon> (<scope>): [{ai-flag}] <message>
 ```
 
 Example:
