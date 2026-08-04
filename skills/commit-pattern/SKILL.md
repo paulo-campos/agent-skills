@@ -1,6 +1,6 @@
 ---
 name: commit-pattern
-description: Use when committing code to apply standardized commit format with icons, issue references, AI flags, run quality checks before commit, and auto-push.
+description: Use when committing code to apply standardized commit format with icons, issue references, AI flags, run quality checks before commit.
 ---
 
 # Commit Pattern
@@ -116,7 +116,7 @@ The `main` branch follows the release workflow and uses release commits:
 
 # Output Contract
 
-Commit created + quality checks executed + push (main/tags only) + branch report.
+Commit created + quality checks executed + branch report. (Commits stay LOCAL unless user explicitly requests push.)
 
 ---
 
@@ -138,7 +138,6 @@ Commit created + quality checks executed + push (main/tags only) + branch report
 
 - Never commit broken code
 
-- Push only on `main` and release tags (never on `develop`, `feature/*`, `fix/*`, `hotfix/*`, `release/*`)
 - Never use `--no-verify` in commits or pushes
 
 - Report branch at the end
@@ -212,40 +211,45 @@ Release commits only:
 
 # AI Identifier Flags
 
-| AI Agent | Flag         |
-| -------- | ------------ |
+Each AI agent MUST use its own name as the flag. The flag is always lowercase, inside square brackets.
+
+**Examples:**
+| AI Agent | Flag |
+| -------- | ---- |
 | Codebuff | `[codebuff]` |
-| Claude   | `[claude]`   |
-| Cursor   | `[cursor]`   |
-| Copilot  | `[copilot]`  |
+| Claude | `[claude]` |
+| Cursor | `[cursor]` |
+| Copilot | `[copilot]` |
+| Opencode | `[opencode]` |
 
 Human commits omit the flag.
+
+**Rule:** Replace `{ai-flag}` with your own agent name in lowercase (e.g., if you are Opencode, use `[opencode]`).
 
 ---
 
 # AI Flag Replacement
 
-The placeholder `{ai-flag}` MUST be replaced with the actual flag from the table above.
+The placeholder `{ai-flag}` MUST be replaced with your own agent name in lowercase.
 
 **Rules:**
-- Replace `{ai-flag}` with `[flag-name]` (e.g., `[opencode]`, `[claude]`)
+- Replace `{ai-flag}` with `[your-agent-name]` (e.g., `[opencode]`, `[claude]`)
 - Do NOT include the curly braces `{}` in the output
 - Do NOT add angle brackets `< >` around the flag
 - The square brackets `[]` ARE part of the final format
+- Never commit with `{ai-flag}` literal — always replace it
 
-**Examples:**
-
-| Placeholder | Correct Output |
-| ----------- | -------------- |
-| `{ai-flag}` | `[opencode]`   |
-| `{ai-flag}` | `[claude]`     |
-| `{ai-flag}` | `[codebuff]`   |
+**Correct:**
+```text
+✨ (auth): [opencode] add login #123
+✨ (auth): [claude] add login #123
+✨ (auth): [codebuff] add login #123
+```
 
 **Wrong:**
 ```text
 ✨ (auth): [{ai-flag}] add login #123    ← placeholder not replaced
 ✨ (auth): [<opencode>] add login #123   ← angle brackets added incorrectly
-✨ (auth): [opencode] add login #123     ← correct
 ```
 
 ---
@@ -253,13 +257,13 @@ The placeholder `{ai-flag}` MUST be replaced with the actual flag from the table
 # Correct Examples
 
 ```text
-✨ (auth): [{ai-flag}] add OAuth login support #123
+✨ (auth): [opencode] add OAuth login support #123
 
-🐛 (api): [{ai-flag}] fix timeout issue #145
+🐛 (api): [claude] fix timeout issue #145
 
-📚 (docs): [{ai-flag}] update installation guide #110
+📚 (docs): [codebuff] update installation guide #110
 
-🔧 (skill): [{ai-flag}] improve commit workflow #132
+🔧 (skill): [cursor] improve commit workflow #132
 ```
 
 ---
@@ -366,19 +370,6 @@ If checks fail:
 
 ---
 
-# Workflow
-
-1. `git status`
-2. Preserve unrelated changes.
-3. Modify only required files.
-4. Run checks.
-5. Stage only related files.
-6. Create commit.
-7. Push (only on `main` or release tags).
-8. Report branch.
-
----
-
 # Release Workflow (`#release`)
 
 `#release` executes:
@@ -391,7 +382,7 @@ If checks fail:
 6. Create release commit.
 7. Create tag.
 8. Push `main` and tags.
-9. Return to develop.
+9. Return to develop: `git checkout develop`
 
 ---
 
@@ -407,16 +398,18 @@ If checks fail:
 
 # Release Commit — Git Command
  
-ALWAYS use multiple `-m` flags for release commits. A single `-m` only 
+ALWAYS use multiple `-m` flags for release commits on `main`. A single `-m` only
 creates the subject line and discards the body.
+
+**Note:** `\n` does NOT create line breaks in git commit messages. Each `-m` flag adds a separate paragraph.
  
-**Correct:**
+**Correct (on `main`):**
 ```bash
 git commit -m '🚀 Release v1.2.0' \
   -m '✨ New features' \
-  -m '• (auth): [{ai-flag}] add OAuth login #123' \
+  -m '• (auth): [opencode] add OAuth login #123' \
   -m '🐛 Bug fixes' \
-  -m '• (api): [{ai-flag}] fix timeout #145'
+  -m '• (api): [opencode] fix timeout #145'
 ```
 
 **Wrong:**
